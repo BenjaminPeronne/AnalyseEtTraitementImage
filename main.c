@@ -79,7 +79,7 @@ int main() {
     */
 
     // Menu de selection et affichage d'une image
-    int choix = 20;
+    int choix = 27;
     while (choix != 0) {
         printf("Merci de bien voulori choisir l'action à effectuer");
         printf("\n  1. Une image en niveau de gris");
@@ -95,7 +95,10 @@ int main() {
         printf("\n  11. Inversion des couleurs d'une image");
         printf("\n  12. Réduction d'une image (changement d'échelle)");
         printf("\n  13. Agrandissement d'une image (changement d'échelle)");
-        printf("\n  14. Convolution de l'image");
+        printf("\n  14. Une image monochrome");
+        printf("\n  15. Supperposition d'image");
+        printf("\n  16. Rotation Image");
+        printf("\n  17. Convolution de l'image");
         printf("\n  0. Quitter");
 
         printf("\nVotre choix : ");
@@ -221,13 +224,13 @@ int main() {
 
             fichier = charger("LAURETTA_PERONNE_Lena.bmp");
             reductionImage(fichier, echelle);
-            enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Reduction.bmp", fichier);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Reduction.bmp", fichier);
             // system("./res/LAURETTA_PERONNE_resultat_Lena_Reduction.bmp");
             free(fichier);
         } else if (choix == 13) {
             // Agrandissement de l'image
-
             int echelle = 0;
+
             printf("Entrer l'échelle : ");
             scanf("%d", &echelle);
 
@@ -239,6 +242,45 @@ int main() {
             free(fichier);
 
         } else if (choix == 14) {
+            // monochrome d'une image en paramètre un canal
+
+            // Entrer une couleur  soit R ou G ou B
+            char couleur;
+
+            printf("Entrer la couleur : \n");
+            scanf(" %c", &couleur);
+
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            monochromeImage(fichier, couleur);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Monochrome.bmp", fichier);
+            // system("./res/LAURETTA_PERONNE_resultat_Lena_Monochrome.bmp");
+            free(fichier);
+        } else if (choix == 15) {
+            // Supperposition d'une image sur une autre
+
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            fichier2 = charger("LAURETTA_PERONNE_Paysage.bmp");
+
+            superpositionImage(fichier, fichier2);
+
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Superposition.bmp", fichier);
+            // system("./res/LAURETTA_PERONNE_resultat_Lena_Superposition.bmp");
+            free(fichier);
+            free(fichier2);
+        } else if (choix == 16) {
+            // Rotation Image 
+
+            int angle = 0;
+            printf("Entrer l'angle : ");
+            scanf("%d", &angle);
+
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            rotationImage(fichier, angle);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Rotation.bmp", fichier);
+            // system("./res/LAURETTA_PERONNE_resultat_Lena_Rotation.bmp");
+            free(fichier);
+
+        } else if (choix == 17) {
             // convulation de l'image |last|
 
             int i, j, diviseur;

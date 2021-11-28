@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 // structure d'entete du fichier
 struct entete_fichier {
@@ -410,8 +411,6 @@ void pivoterImageGauche(struct fichierimage *fichier) {
     }
 }
 
-// #####################################################################################################################
-
 // Calcul du pourcentage de couleur d'une image (RVB), teine, saturation et luminance
 
 // Création d'une image négative
@@ -482,6 +481,7 @@ void inversionCouleur(struct fichierimage *fichier) {
 
 // Réduction d'une image (changement d'échelle)
 void reductionImage(struct fichierimage *fichier, int echelle) {
+    char nomEnregistrement[100];
     int i, j;
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur / echelle, fichier->entetebmp.largeur / echelle);
 
@@ -493,29 +493,24 @@ void reductionImage(struct fichierimage *fichier, int echelle) {
         }
     }
 
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
-        for (j = 0; j < fichier->entetebmp.largeur; j++) {
-            fichier->image[i][j].r = fichier2->image[i / echelle][j / echelle].r;
-            fichier->image[i][j].g = fichier2->image[i / echelle][j / echelle].g;
-            fichier->image[i][j].b = fichier2->image[i / echelle][j / echelle].b;
-        }
-    }
-
     // enregistrer("./res/LAURETTA_PERONNE_reductionImage.bmp", fichier2);
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_reductionImage_echelle_%d.bmp", echelle);
+    enregistrer(nomEnregistrement, fichier2);
     free(fichier2);
 }
 
 // Agrandissement d'une image (changement d'échelle)
 void agrandissementImage(struct fichierimage *fichier, int echelle) {
+    char nomEnregistrement[100];
     int i, j;
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur * echelle, fichier->entetebmp.largeur * echelle);
-    
+
     for (i = 1; i < fichier->entetebmp.hauteur; i++) {
         for (j = 1; j < fichier->entetebmp.largeur; j++) {
-            
+
             for (int k = 0; k < echelle; k++) {
                 for (int l = 0; l < echelle; l++) {
-                    fichier2->image[i * echelle + k][j * echelle + l].r = fichier->image[i][j].r; 
+                    fichier2->image[i * echelle + k][j * echelle + l].r = fichier->image[i][j].r;
                     fichier2->image[i * echelle + k][j * echelle + l].g = fichier->image[i][j].g;
                     fichier2->image[i * echelle + k][j * echelle + l].b = fichier->image[i][j].b;
                 }
@@ -523,12 +518,40 @@ void agrandissementImage(struct fichierimage *fichier, int echelle) {
         }
     }
 
-    enregistrer("./res/LAURETTA_PERONNE_agrandissementImage.bmp", fichier2);
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_agrandissementImage_echelle_%d.bmp", echelle);
+    enregistrer(nomEnregistrement, fichier2);
     free(fichier2);
-
 }
 
-// #####################################################################################################################
+// Transformation d'une image en monochrome.
+void monochromeImage(struct fichierimage *fichier, char couleur) {
+    char nomEnregistrement[100];
+    int i, j;
+
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            if (couleur == 'r') {
+                fichier2->image[i][j].r = fichier->image[i][j].r;
+                fichier2->image[i][j].g = 0;
+                fichier2->image[i][j].b = 0;
+            } else if (couleur == 'g' || couleur == 'v') {
+                fichier2->image[i][j].r = 0;
+                fichier2->image[i][j].g = fichier->image[i][j].g;
+                fichier2->image[i][j].b = 0;
+            } else if (couleur == 'b') {
+                fichier2->image[i][j].r = 0;
+                fichier2->image[i][j].g = 0;
+                fichier2->image[i][j].b = fichier->image[i][j].b;
+            }
+        }
+    }
+
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_monochromeImage_couleur_%c.bmp", couleur);
+    enregistrer(nomEnregistrement, fichier2);
+    free(fichier2);
+}
 
 void convolution(struct fichierimage *fichier, int matrice[3][3], int diviseur) {
     int i, j, k, l;
@@ -581,4 +604,78 @@ void convolution(struct fichierimage *fichier, int matrice[3][3], int diviseur) 
             fichier->image[i][j].b = niveauB;
         }
     }
+}
+
+// Supperposition d'une image sur une autre
+void superpositionImage(struct fichierimage *fichier, struct fichierimage *fichier2) {
+    int i, j;
+
+    struct fichierimage *fichier3 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            fichier3->image[i][j].r = fichier->image[i][j].r;
+            fichier3->image[i][j].g = fichier->image[i][j].g;
+            fichier3->image[i][j].b = fichier->image[i][j].b;
+        }
+    }
+
+    for (i = 0; i < fichier2->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier2->entetebmp.largeur; j++) {
+            fichier3->image[i][j].r = fichier2->image[i][j].r;
+            fichier3->image[i][j].g = fichier2->image[i][j].g;
+            fichier3->image[i][j].b = fichier2->image[i][j].b;
+        }
+    }
+
+    enregistrer("./res/LAURETTA_PERONNE_supperposition.bmp", fichier3);
+    free(fichier3);
+}
+
+// Rotation d'une image d'un angle donné en degrés
+void rotationImage(struct fichierimage *fichier, int angle) {
+    char nomEnregistrement[100];
+    int i, j;
+
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            fichier2->image[i][j].r = fichier->image[i][j].r;
+            fichier2->image[i][j].g = fichier->image[i][j].g;
+            fichier2->image[i][j].b = fichier->image[i][j].b;
+        }
+    }
+
+    double angleRad = angle * M_PI / 180;
+
+    double cosinus = cos(angleRad);
+    double sinus = sin(angleRad);
+
+    double x, y;
+    int x2, y2;
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            x = i - (fichier->entetebmp.hauteur / 2);
+            y = j - (fichier->entetebmp.largeur / 2);
+
+            x2 = (x * cosinus) - (y * sinus) + (fichier->entetebmp.hauteur / 2);
+            y2 = (x * sinus) + (y * cosinus) + (fichier->entetebmp.largeur / 2);
+
+            if (x2 < 0 || x2 >= fichier->entetebmp.hauteur || y2 < 0 || y2 >= fichier->entetebmp.largeur) {
+                fichier2->image[i][j].r = 0;
+                fichier2->image[i][j].g = 0;
+                fichier2->image[i][j].b = 0;
+            } else {
+                fichier2->image[i][j].r = fichier->image[x2][y2].r;
+                fichier2->image[i][j].g = fichier->image[x2][y2].g;
+                fichier2->image[i][j].b = fichier->image[x2][y2].b;
+            }
+        }
+    }
+
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_rotation_%d.bmp", angle);
+    enregistrer(nomEnregistrement, fichier2);
+    free(fichier2);
 }
