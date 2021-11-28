@@ -740,8 +740,25 @@ void reductionBruite(struct fichierimage *fichier) {
         }
     }
 
-    
     enregistrer("./res/LAURETTA_PERONNE_reduireBruit.bmp", fichier2);
+    free(fichier2);
+}
+
+// Fonction permettant de réalisé un filtrage de l'image
+void filtre(struct fichierimage *fichier) {
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
+
+    int i, j;
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            fichier2->image[i][j].r = fichier->image[i][j].r + (fichier->image[i][j].r * 0.1);
+            fichier2->image[i][j].g = fichier->image[i][j].g + (fichier->image[i][j].g * 0.1);
+            fichier2->image[i][j].b = fichier->image[i][j].b + (fichier->image[i][j].b * 0.1);
+        }
+    }
+
+    enregistrer("./res/LAURETTA_PERONNE_filtre.bmp", fichier2);
     free(fichier2);
 }
 
