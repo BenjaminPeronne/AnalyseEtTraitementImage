@@ -304,6 +304,7 @@ struct fichierimage *nouveau(int largeur, int hauteur) {
 
     return fichier;
 }
+// #############################################
 
 // fonction permetant de mettre une image en niveau de gris
 void imageVersNiveauDeGris(struct fichierimage *fichier) {
@@ -358,16 +359,17 @@ void imageVersSymetrie(struct fichierimage *fichier) {
         }
     }
 
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
-        for (j = 0; j < fichier->entetebmp.largeur; j++) {
-            fichier->image[i][j].r = fichier2->image[i][j].r;
-            fichier->image[i][j].g = fichier2->image[i][j].g;
-            fichier->image[i][j].b = fichier2->image[i][j].b;
-        }
-    }
+    // for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+    //     for (j = 0; j < fichier->entetebmp.largeur; j++) {
+    //         fichier->image[i][j].r = fichier2->image[i][j].r;
+    //         fichier->image[i][j].g = fichier2->image[i][j].g;
+    //         fichier->image[i][j].b = fichier2->image[i][j].b;
+    //     }
+    // }
 
-    // enregistrer("./res/LAURETTA_PERONNE_Symetrie.bmp", fichier2);
-    // free(fichier2);
+    enregistrer("./res/LAURETTA_PERONNE_Symetrie.bmp", fichier2);
+    system("open ./res/LAURETTA_PERONNE_Symetrie.bmp");
+    free(fichier2);
 }
 
 // fonction permetant de pivoter une image de 90° à gauche
@@ -496,6 +498,8 @@ void reductionImage(struct fichierimage *fichier, int echelle) {
     // enregistrer("./res/LAURETTA_PERONNE_reductionImage.bmp", fichier2);
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_reductionImage_echelle_%d.bmp", echelle);
     enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_reductionImage_echelle_%d.bmp", echelle);
+    system(nomEnregistrement);
     free(fichier2);
 }
 
@@ -520,6 +524,8 @@ void agrandissementImage(struct fichierimage *fichier, int echelle) {
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_agrandissementImage_echelle_%d.bmp", echelle);
     enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_agrandissementImage_echelle_%d.bmp", echelle);
+    system(nomEnregistrement);
     free(fichier2);
 }
 
@@ -550,6 +556,8 @@ void monochromeImage(struct fichierimage *fichier, char couleur) {
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_monochromeImage_couleur_%c.bmp", couleur);
     enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_monochromeImage_couleur_%c.bmp", couleur);
+    system(nomEnregistrement);
     free(fichier2);
 }
 
@@ -678,6 +686,7 @@ void rotationImage(struct fichierimage *fichier, int angle) {
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_rotation_%d°.bmp", angle);
     enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_rotation_%d°.bmp", angle);
     system(nomEnregistrement);
     free(fichier2);
 }
@@ -747,7 +756,7 @@ void reductionBruite(struct fichierimage *fichier) {
     free(fichier2);
 }
 
-// Fonction permettant de réalisé un filtrage de l'image
+// Fonction permettant le filtre d'une image en appliquant un masque de convolution à l'image
 void filtreImage(struct fichierimage *fichier) {
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
 
@@ -788,6 +797,7 @@ void modifLuminanceImage(struct fichierimage *fichier, int luminance) {
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_luminance%d_percent.bmp", luminance);
     enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_luminance%d_percent.bmp", luminance);
     system(nomEnregistrement);
     free(fichier2);
 }
@@ -883,30 +893,29 @@ void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2
     fichier->entetebmp.hauteur = y2;
 
     // si x1 est plus grand que la largeur de l'image alors on met x1 à la largeur de l'image (pour ne pas dépasser)
-    if (x1 > fichier->entetebmp.largeur) { 
+    if (x1 > fichier->entetebmp.largeur) {
         x4 = x1;
         x1 = fichier->entetebmp.largeur;
         fichier->entetebmp.largeur = x4;
     }
 
     // si y1 est plus grand que la hauteur de l'image alors on change la hauteur de l'image par la hauteur de y1 (pour ne pas dépasser)
-    if (y1 > fichier->entetebmp.hauteur) { 
+    if (y1 > fichier->entetebmp.hauteur) {
         y4 = y1;
         y1 = fichier->entetebmp.hauteur;
         fichier->entetebmp.hauteur = y4;
     }
 
     // création d'un nouveau fichier image avec les dimensions de la zone sélectionnée
-    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur - y1, fichier->entetebmp.largeur - x1); 
-    
-    
-    for (i = y1; i < fichier->entetebmp.hauteur; i++) { // i = ligne
-        for (j = x1; j < fichier->entetebmp.largeur; j++) { // j = colonne
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur - y1, fichier->entetebmp.largeur - x1);
+
+    for (i = y1; i < fichier->entetebmp.hauteur; i++) {                 // i = ligne
+        for (j = x1; j < fichier->entetebmp.largeur; j++) {             // j = colonne
             fichier2->image[i - y1][j - x1].r = fichier->image[i][j].r; // copie de la couleur de l'image dans la nouvelle image
             fichier2->image[i - y1][j - x1].g = fichier->image[i][j].g; // copie de la couleur de l'image dans la nouvelle image
             fichier2->image[i - y1][j - x1].b = fichier->image[i][j].b; // copie de la couleur de l'image dans la nouvelle image
-        } // fin de la boucle de copie
-    }   // fin de la boucle for
+        }                                                               // fin de la boucle de copie
+    }                                                                   // fin de la boucle for
 
     // rectifier la taille de l'image
     fichier2->entetebmp.largeur = fichier->entetebmp.largeur - x1;
@@ -914,6 +923,7 @@ void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_selection_%d_%d_%d_%d.bmp", x, y, x2, y2);
     enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_selection_%d_%d_%d_%d.bmp", x, y, x2, y2);
     system(nomEnregistrement);
     free(fichier2);
 }
@@ -932,32 +942,32 @@ void calculHistogramme(struct fichierimage *fichier) {
     int choix = 6;
 
     // initialisation des tableaux à 0 pour les histogrammes
-    for (i = 0; i < 256; i++) { 
-        histoR[i] = 0;  
+    for (i = 0; i < 256; i++) {
+        histoR[i] = 0;
         histoG[i] = 0;
         histoB[i] = 0;
     }
 
     // calcul des histogrammes
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) { // i = ligne
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {     // i = ligne
         for (j = 0; j < fichier->entetebmp.largeur; j++) { // j = colonne
             // copie de la couleur de l'image dans la nouvelle image
-            r = fichier->image[i][j].r; 
-            g = fichier->image[i][j].g;   
+            r = fichier->image[i][j].r;
+            g = fichier->image[i][j].g;
             b = fichier->image[i][j].b;
 
             // ajout d'un pixel dans le tableau de l'histogramme
-            histoR[r]++; 
-            histoG[g]++; 
-            histoB[b]++;  
+            histoR[r]++;
+            histoG[g]++;
+            histoB[b]++;
         }
     }
 
     for (i = 0; i < 256; i++) { // i = ligne
         // si le nombre de pixel de l'histogramme est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
-        if (histoR[i] > maxR) {  
+        if (histoR[i] > maxR) {
             maxR = histoR[i];
-        }    
+        }
         if (histoG[i] > maxG) {
             maxG = histoG[i];
         }
@@ -967,7 +977,7 @@ void calculHistogramme(struct fichierimage *fichier) {
     }
 
     // on met le max à la valeur du max de l'histogramme de la couleur rouge (car on veut que les histogrammes soient de même taille)
-    max = maxR; 
+    max = maxR;
     // si le max de l'histogramme de la couleur verte est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
     if (maxG > max) {
         max = maxG;
@@ -979,14 +989,13 @@ void calculHistogramme(struct fichierimage *fichier) {
 
     printf("\n\n              Histogramme de l'image\n\n");
 
-
-    // affichage des histogrammes 
+    // affichage des histogrammes
     while (choix != 0) {
         printf("Merci de bien voulori choisir l'action à effectuer");
         printf("\n  1. Histogramme R");
         printf("\n  2. Histogramme G");
         printf("\n  3. Histogramme V");
-        printf("\n  4. Histogramme R G B");        
+        printf("\n  4. Histogramme R G B");
         printf("\n  0. Retour au menu principal ");
 
         printf("\n\n  Votre choix : ");
@@ -1029,8 +1038,7 @@ void calculHistogramme(struct fichierimage *fichier) {
                 printf("%d ", histoB[i]);
             }
             printf("\n\n");
-        } 
-        else if (choix == 0) {
+        } else if (choix == 0) {
             printf("\n\n Retour au menu principal \n\n");
         } else {
             printf("\n\n Choix incorrect \n\n");
@@ -1038,4 +1046,140 @@ void calculHistogramme(struct fichierimage *fichier) {
     }
 
     free(fichier);
-}    
+}
+
+// Filtre moyenneur sur une image.
+void filtreMoyenneur(struct fichierimage *fichier) {
+    int i, j;
+    int r, g, b;
+    int moyenneR = 0;
+    int moyenneG = 0;
+    int moyenneB = 0;
+    int choix = 6;
+    int taille = 3;
+
+    // initialisation des tableaux à 0 pour les histogrammes
+    for (i = 0; i < taille; i++) {
+        for (j = 0; j < taille; j++) {
+            moyenneR += fichier->image[i][j].r;
+            moyenneG += fichier->image[i][j].g;
+            moyenneB += fichier->image[i][j].b;
+        }
+    }
+
+    moyenneR = moyenneR / (taille * taille);
+    moyenneG = moyenneG / (taille * taille);
+    moyenneB = moyenneB / (taille * taille);
+
+    printf("\n\n              Filtre moyenneur\n\n");
+
+    while (choix != 0) { // tant que l'utilisateur n'a pas choisi de retourner au menu principal
+        printf("Merci de bien voulori choisir l'action à effectuer");
+        printf("\n  1. Filtre moyenneur R");
+        printf("\n  2. Filtre moyenneur G");
+        printf("\n  3. Filtre moyenneur B");
+        printf("\n  4. Filtre moyenneur R G B");
+        printf("\n  0. Retour au menu principal ");
+
+        printf("\n\n  Votre choix : ");
+        scanf("%d", &choix);
+
+        system("clear");
+        system("cls");
+
+        printf("\n\n\n\n");
+        
+        if (choix == 1) { // si l'utilisateur a choisi de filtrer l'image en rouge
+            printf("\n\nR : %d Image filtrée en rouge \n", moyenneR);
+            // Enregistrement de l'image filtrée
+            for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+                for (j = 0; j < fichier->entetebmp.largeur; j++) {
+                    fichier->image[i][j].r = moyenneR;
+                }
+            }
+            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_R.bmp", fichier);
+            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_R.bmp");
+
+            // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
+            for (i = 0; i < taille; i++) {
+                for (j = 0; j < taille; j++) {
+                    moyenneR = 0;
+                    moyenneG = 0;
+                    moyenneB = 0;
+                }
+            }
+        } else if (choix == 2) { // si l'utilisateur a choisi de filtrer l'image en vert
+            printf("\n\nV : %d Image filtrée en vert \n", moyenneG);
+            // Enregistrement de l'image filtrée
+            for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+                for (j = 0; j < fichier->entetebmp.largeur; j++) {
+                    fichier->image[i][j].g = moyenneG;
+                }
+            }
+            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_G.bmp", fichier);
+            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_G.bmp");
+
+            // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
+            for (i = 0; i < taille; i++) {
+                for (j = 0; j < taille; j++) {
+                    moyenneR = 0;
+                    moyenneG = 0;
+                    moyenneB = 0;
+                }
+            }            
+        } else if (choix == 3) {
+            printf("\n\nB : %d Image filtrée en bleu \n", moyenneB);
+            // Enregistrement de l'image filtrée
+            for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+                for (j = 0; j < fichier->entetebmp.largeur; j++) {
+                    fichier->image[i][j].b = moyenneB;
+                }
+            }
+            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_B.bmp", fichier);
+            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_B.bmp");
+
+            // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
+            for (i = 0; i < taille; i++) {
+                for (j = 0; j < taille; j++) {
+                    moyenneR = 0;
+                    moyenneG = 0;
+                    moyenneB = 0;
+                }
+            }
+        } else if (choix == 4) { // si l'utilisateur a choisi de filtrer l'image en rouge et vert et bleu
+            printf("\n\nR : %d Image filtrée en rouge \n", moyenneR);
+            printf("\n\nV : %d Image filtrée en vert \n", moyenneG);
+            printf("\n\nB : %d Image filtrée en bleu \n", moyenneB);
+
+            // Enregistrement de l'image filtrée
+            for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+                for (j = 0; j < fichier->entetebmp.largeur; j++) {
+                    fichier->image[i][j].r = moyenneR;
+                    fichier->image[i][j].g = moyenneG;
+                    fichier->image[i][j].b = moyenneB;
+                }
+            }
+            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_R_G_B.bmp", fichier);
+            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_R_G_B.bmp");
+
+            // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
+            for (i = 0; i < taille; i++) {
+                for (j = 0; j < taille; j++) {
+                    moyenneR = 0;
+                    moyenneG = 0;
+                    moyenneB = 0;
+                }
+            }
+            
+        } else if (choix == 0) {
+            printf("\n\nRetour au menu principal");
+        } else {
+            printf("\n\n Choix incorrect \n\n");
+        }
+    }
+    free(fichier);
+}
+
+// Histogramme de l'image et egalisation de l'image
+void histogrammeEgalisation(struct fichierimage *fichier) {
+}
