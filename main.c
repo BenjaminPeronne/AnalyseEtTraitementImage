@@ -98,7 +98,8 @@ int main() {
         printf("\n  14. Une image monochrome");
         printf("\n  15. Supperposition d'image");
         printf("\n  16. Rotation Image");
-        printf("\n  17. Convolution de l'image");
+        printf("\n  17. Réduire le bruit d'une image");
+        printf("\n  18. Convolution de l'image");
         printf("\n  0. Quitter");
 
         printf("\nVotre choix : ");
@@ -281,6 +282,15 @@ int main() {
             free(fichier);
 
         } else if (choix == 17) {
+            // Réduction de bruite d'une image
+
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            reductionBruite(fichier);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_ReductionBruite.bmp", fichier);
+            // system("./res/LAURETTA_PERONNE_resultat_Lena_ReductionBruite.bmp");
+            free(fichier);
+        } 
+        else if (choix == 18) {
             // convulation de l'image |last|
 
             int i, j, diviseur;

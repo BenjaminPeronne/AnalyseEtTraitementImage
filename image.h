@@ -675,7 +675,73 @@ void rotationImage(struct fichierimage *fichier, int angle) {
         }
     }
 
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_rotation_%d.bmp", angle);
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_rotation_%d°.bmp", angle);
     enregistrer(nomEnregistrement, fichier2);
     free(fichier2);
 }
+
+// réduire le bruit de l'image 
+void reductionBruite(struct fichierimage *fichier) {
+    int i, j;
+    int niveauR, niveauG, niveauB;
+
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            niveauR = 0;
+            niveauG = 0;
+            niveauB = 0;
+
+            if (i - 1 >= 0) {
+                niveauR += fichier->image[i - 1][j].r;
+                niveauG += fichier->image[i - 1][j].g;
+                niveauB += fichier->image[i - 1][j].b;
+            }
+            if (i + 1 < fichier->entetebmp.hauteur) {
+                niveauR += fichier->image[i + 1][j].r;
+                niveauG += fichier->image[i + 1][j].g;
+                niveauB += fichier->image[i + 1][j].b;
+            }
+            if (j - 1 >= 0) {
+                niveauR += fichier->image[i][j - 1].r;
+                niveauG += fichier->image[i][j - 1].g;
+                niveauB += fichier->image[i][j - 1].b;
+            }
+            if (j + 1 < fichier->entetebmp.largeur) {
+                niveauR += fichier->image[i][j + 1].r;
+                niveauG += fichier->image[i][j + 1].g;
+                niveauB += fichier->image[i][j + 1].b;
+            }
+            if (i - 1 >= 0 && j - 1 >= 0) {
+                niveauR += fichier->image[i - 1][j - 1].r;
+                niveauG += fichier->image[i - 1][j - 1].g;
+                niveauB += fichier->image[i - 1][j - 1].b;
+            }
+            if (i - 1 >= 0 && j + 1 < fichier->entetebmp.largeur) {
+                niveauR += fichier->image[i - 1][j + 1].r;
+                niveauG += fichier->image[i - 1][j + 1].g;
+                niveauB += fichier->image[i - 1][j + 1].b;
+            }
+            if (i + 1 < fichier->entetebmp.hauteur && j - 1 >= 0) {
+                niveauR += fichier->image[i + 1][j - 1].r;
+                niveauG += fichier->image[i + 1][j - 1].g;
+                niveauB += fichier->image[i + 1][j - 1].b;
+            }
+            if (i + 1 < fichier->entetebmp.hauteur && j + 1 < fichier->entetebmp.largeur) {
+                niveauR += fichier->image[i + 1][j + 1].r;
+                niveauG += fichier->image[i + 1][j + 1].g;
+                niveauB += fichier->image[i + 1][j + 1].b;
+            }
+
+            fichier2->image[i][j].r = niveauR / 9;
+            fichier2->image[i][j].g = niveauG / 9;
+            fichier2->image[i][j].b = niveauB / 9;
+        }
+    }
+
+    
+    enregistrer("./res/LAURETTA_PERONNE_reduireBruit.bmp", fichier2);
+    free(fichier2);
+}
+
