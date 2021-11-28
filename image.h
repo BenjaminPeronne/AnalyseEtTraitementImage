@@ -745,7 +745,7 @@ void reductionBruite(struct fichierimage *fichier) {
 }
 
 // Fonction permettant de réalisé un filtrage de l'image
-void filtre(struct fichierimage *fichier) {
+void filtreImage(struct fichierimage *fichier) {
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
 
     int i, j;
@@ -761,4 +761,3 @@ void filtre(struct fichierimage *fichier) {
     enregistrer("./res/LAURETTA_PERONNE_filtre.bmp", fichier2);
     free(fichier2);
 }
-
