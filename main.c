@@ -227,7 +227,16 @@ int main() {
         } else if (choix == 13) {
             // Agrandissement de l'image
 
+            int echelle = 0;
+            printf("Entrer l'échelle : ");
+            scanf("%d", &echelle);
+
+            // fichier = charger("LAURETTA_PERONNE_resultat_Lena_Reduction.bmp");
             fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            agrandissementImage(fichier, echelle);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Agrandissement.bmp", fichier);
+            // system("./res/LAURETTA_PERONNE_resultat_Lena_Agrandissement.bmp");
+            free(fichier);
 
         } else if (choix == 14) {
             // convulation de l'image |last|

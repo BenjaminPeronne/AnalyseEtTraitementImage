@@ -505,6 +505,29 @@ void reductionImage(struct fichierimage *fichier, int echelle) {
     free(fichier2);
 }
 
+// Agrandissement d'une image (changement d'échelle)
+void agrandissementImage(struct fichierimage *fichier, int echelle) {
+    int i, j;
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur * echelle, fichier->entetebmp.largeur * echelle);
+    
+    for (i = 1; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 1; j < fichier->entetebmp.largeur; j++) {
+            
+            for (int k = 0; k < echelle; k++) {
+                for (int l = 0; l < echelle; l++) {
+                    fichier2->image[i * echelle + k][j * echelle + l].r = fichier->image[i][j].r; 
+                    fichier2->image[i * echelle + k][j * echelle + l].g = fichier->image[i][j].g;
+                    fichier2->image[i * echelle + k][j * echelle + l].b = fichier->image[i][j].b;
+                }
+            }
+        }
+    }
+
+    enregistrer("./res/LAURETTA_PERONNE_agrandissementImage.bmp", fichier2);
+    free(fichier2);
+
+}
+
 // #####################################################################################################################
 
 void convolution(struct fichierimage *fichier, int matrice[3][3], int diviseur) {
