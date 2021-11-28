@@ -30,7 +30,8 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         printf("\n  19. Modification de la luminosité d'une image");
         printf("\n  20. Récupérations d'informations d'une images");
         printf("\n  21. Selectionner une zone de l'image");
-        printf("\n  22. Convolution de l'image");
+        printf("\n  22. Calcul de l'histogramme d'une image");
+        printf("\n  23. Convolution de l'image");
         printf("\n  0. Quitter");
 
         printf("\nVotre choix : ");
@@ -265,6 +266,12 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             free(fichier);
 
         } else if (choix == 22) {
+            // Appel de la fonction permettant le calcul de l'histogramme d'une image
+
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            calculHistogramme(fichier);            
+        }
+         else if (choix == 23) {
             // convulation de l'image |last|
 
             int i, j, diviseur;

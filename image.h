@@ -629,6 +629,7 @@ void superpositionImage(struct fichierimage *fichier, struct fichierimage *fichi
     }
 
     enregistrer("./res/LAURETTA_PERONNE_supperposition.bmp", fichier3);
+    system("open ./res/LAURETTA_PERONNE_supperposition.bmp");
     free(fichier3);
 }
 
@@ -677,6 +678,7 @@ void rotationImage(struct fichierimage *fichier, int angle) {
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_rotation_%d°.bmp", angle);
     enregistrer(nomEnregistrement, fichier2);
+    system(nomEnregistrement);
     free(fichier2);
 }
 
@@ -741,6 +743,7 @@ void reductionBruite(struct fichierimage *fichier) {
     }
 
     enregistrer("./res/LAURETTA_PERONNE_reduireBruit.bmp", fichier2);
+    system("open ./res/LAURETTA_PERONNE_reduireBruit.bmp");
     free(fichier2);
 }
 
@@ -759,6 +762,7 @@ void filtreImage(struct fichierimage *fichier) {
     }
 
     enregistrer("./res/LAURETTA_PERONNE_filtre.bmp", fichier2);
+    system("open ./res/LAURETTA_PERONNE_filtre.bmp");
     free(fichier2);
 }
 
@@ -784,7 +788,7 @@ void modifLuminanceImage(struct fichierimage *fichier, int luminance) {
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_luminance%d_percent.bmp", luminance);
     enregistrer(nomEnregistrement, fichier2);
-    system("open ./res/LAURETTA_PERONNE_luminance%d_percent.bmp");
+    system(nomEnregistrement);
     free(fichier2);
 }
 
@@ -878,27 +882,31 @@ void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2
     fichier->entetebmp.largeur = x2;
     fichier->entetebmp.hauteur = y2;
 
-    if (x1 > fichier->entetebmp.largeur) {
+    // si x1 est plus grand que la largeur de l'image alors on met x1 à la largeur de l'image (pour ne pas dépasser)
+    if (x1 > fichier->entetebmp.largeur) { 
         x4 = x1;
         x1 = fichier->entetebmp.largeur;
         fichier->entetebmp.largeur = x4;
     }
 
-    if (y1 > fichier->entetebmp.hauteur) {
+    // si y1 est plus grand que la hauteur de l'image alors on change la hauteur de l'image par la hauteur de y1 (pour ne pas dépasser)
+    if (y1 > fichier->entetebmp.hauteur) { 
         y4 = y1;
         y1 = fichier->entetebmp.hauteur;
         fichier->entetebmp.hauteur = y4;
     }
 
-    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur - y1, fichier->entetebmp.largeur - x1);
-
-    for (i = y1; i < fichier->entetebmp.hauteur; i++) {
-        for (j = x1; j < fichier->entetebmp.largeur; j++) {
-            fichier2->image[i - y1][j - x1].r = fichier->image[i][j].r;
-            fichier2->image[i - y1][j - x1].g = fichier->image[i][j].g;
-            fichier2->image[i - y1][j - x1].b = fichier->image[i][j].b;
-        }
-    }
+    // création d'un nouveau fichier image avec les dimensions de la zone sélectionnée
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur - y1, fichier->entetebmp.largeur - x1); 
+    
+    
+    for (i = y1; i < fichier->entetebmp.hauteur; i++) { // i = ligne
+        for (j = x1; j < fichier->entetebmp.largeur; j++) { // j = colonne
+            fichier2->image[i - y1][j - x1].r = fichier->image[i][j].r; // copie de la couleur de l'image dans la nouvelle image
+            fichier2->image[i - y1][j - x1].g = fichier->image[i][j].g; // copie de la couleur de l'image dans la nouvelle image
+            fichier2->image[i - y1][j - x1].b = fichier->image[i][j].b; // copie de la couleur de l'image dans la nouvelle image
+        } // fin de la boucle de copie
+    }   // fin de la boucle for
 
     // rectifier la taille de l'image
     fichier2->entetebmp.largeur = fichier->entetebmp.largeur - x1;
@@ -906,6 +914,128 @@ void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2
 
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_selection_%d_%d_%d_%d.bmp", x, y, x2, y2);
     enregistrer(nomEnregistrement, fichier2);
-    // system("open ./res/LAURETTA_PERONNE_selection.bmp");
+    system(nomEnregistrement);
     free(fichier2);
 }
+
+// Calcul de l'histogramme d'une image.
+void calculHistogramme(struct fichierimage *fichier) {
+    int i, j;
+    int r, g, b;
+    int histoR[256];
+    int histoG[256];
+    int histoB[256];
+    int maxR = 0;
+    int maxG = 0;
+    int maxB = 0;
+    int max = 0;
+    int choix = 6;
+
+    // initialisation des tableaux à 0 pour les histogrammes
+    for (i = 0; i < 256; i++) { 
+        histoR[i] = 0;  
+        histoG[i] = 0;
+        histoB[i] = 0;
+    }
+
+    // calcul des histogrammes
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) { // i = ligne
+        for (j = 0; j < fichier->entetebmp.largeur; j++) { // j = colonne
+            // copie de la couleur de l'image dans la nouvelle image
+            r = fichier->image[i][j].r; 
+            g = fichier->image[i][j].g;   
+            b = fichier->image[i][j].b;
+
+            // ajout d'un pixel dans le tableau de l'histogramme
+            histoR[r]++; 
+            histoG[g]++; 
+            histoB[b]++;  
+        }
+    }
+
+    for (i = 0; i < 256; i++) { // i = ligne
+        // si le nombre de pixel de l'histogramme est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
+        if (histoR[i] > maxR) {  
+            maxR = histoR[i];
+        }    
+        if (histoG[i] > maxG) {
+            maxG = histoG[i];
+        }
+        if (histoB[i] > maxB) {
+            maxB = histoB[i];
+        }
+    }
+
+    // on met le max à la valeur du max de l'histogramme de la couleur rouge (car on veut que les histogrammes soient de même taille)
+    max = maxR; 
+    // si le max de l'histogramme de la couleur verte est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
+    if (maxG > max) {
+        max = maxG;
+    }
+    // si le max de l'histogramme de la couleur bleue est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
+    if (maxB > max) {
+        max = maxB;
+    }
+
+    printf("\n\n              Histogramme de l'image\n\n");
+
+
+    // affichage des histogrammes 
+    while (choix != 0) {
+        printf("Merci de bien voulori choisir l'action à effectuer");
+        printf("\n  1. Histogramme R");
+        printf("\n  2. Histogramme G");
+        printf("\n  3. Histogramme V");
+        printf("\n  4. Histogramme R G B");        
+        printf("\n  0. Retour au menu principal ");
+
+        printf("\n\n  Votre choix : ");
+        scanf("%d", &choix);
+
+        system("clear");
+        system("cls");
+
+        printf("\n\n\n\n");
+
+        if (choix == 1) {
+            printf("\n\n R : ");
+            for (i = 0; i < 256; i++) {
+                printf("%d ", histoR[i]);
+            }
+            printf("\n\n");
+        } else if (choix == 2) {
+            printf("\n\n G : ");
+            for (i = 0; i < 256; i++) {
+                printf("%d ", histoG[i]);
+            }
+            printf("\n\n");
+        } else if (choix == 3) {
+            printf("\n\n B : ");
+            for (i = 0; i < 256; i++) {
+                printf("%d ", histoB[i]);
+            }
+            printf("\n\n");
+        } else if (choix == 4) {
+            printf("\n\n R : ");
+            for (i = 0; i < 256; i++) {
+                printf("%d ", histoR[i]);
+            }
+            printf("\n\n G : ");
+            for (i = 0; i < 256; i++) {
+                printf("%d ", histoG[i]);
+            }
+            printf("\n\n B : ");
+            for (i = 0; i < 256; i++) {
+                printf("%d ", histoB[i]);
+            }
+            printf("\n\n");
+        } 
+        else if (choix == 0) {
+            printf("\n\n Retour au menu principal \n\n");
+        } else {
+            printf("\n\n Choix incorrect \n\n");
+        }
+    }
+
+    free(fichier);
+}    
