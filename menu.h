@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2, struct fichierimage *fichier3) {
     // Menu de selection et affichage d'une image
 
@@ -232,7 +231,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Filtrage.bmp", fichier);
             // system("./res/LAURETTA_PERONNE_resultat_Lena_Filtrage.bmp");
             free(fichier);
-        } else if (choix == 19) {            
+        } else if (choix == 19) {
             int luminosite = 0;
             printf("Entrer la luminosité  entre 0 et 100 : ");
             scanf("%d", &luminosite);
@@ -265,8 +264,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             // system("./res/LAURETTA_PERONNE_resultat_Lena_Selection.bmp");
             free(fichier);
 
-        }
-         else if (choix == 22) {
+        } else if (choix == 22) {
             // convulation de l'image |last|
 
             int i, j, diviseur;

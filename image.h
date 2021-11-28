@@ -870,7 +870,7 @@ void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2
     char nomEnregistrement[100];
     int i, j;
     int x1, y1;
-    
+
     int x4, y4;
 
     x1 = x;
