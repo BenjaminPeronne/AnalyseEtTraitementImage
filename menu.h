@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2, struct fichierimage *fichier3) {
     // Menu de selection et affichage d'une image
 
@@ -27,7 +28,8 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         printf("\n  16. Rotation Image");
         printf("\n  17. Réduire le bruit d'une image");
         printf("\n  18. Filtrage");
-        printf("\n  19. Convolution de l'image");
+        printf("\n  19. Modification de la luminosité d'une image");
+        printf("\n  20. Convolution de l'image");
         printf("\n  0. Quitter");
 
         printf("\nVotre choix : ");
@@ -225,7 +227,17 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Filtrage.bmp", fichier);
             // system("./res/LAURETTA_PERONNE_resultat_Lena_Filtrage.bmp");
             free(fichier);
-        } else if (choix == 19) {
+        } else if (choix == 19) {            
+            int luminosite = 0;
+            printf("Entrer la luminosité  entre 0 et 100 : ");
+            scanf("%d", &luminosite);
+
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            modifLuminanceImage(fichier, luminosite);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_ModificationLuminosite.bmp", fichier);
+            free(fichier);
+        }
+         else if (choix == 20) {
             // convulation de l'image |last|
 
             int i, j, diviseur;

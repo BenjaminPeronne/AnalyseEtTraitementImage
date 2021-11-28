@@ -761,3 +761,31 @@ void filtreImage(struct fichierimage *fichier) {
     enregistrer("./res/LAURETTA_PERONNE_filtre.bmp", fichier2);
     free(fichier2);
 }
+
+
+
+// modification de la luminance d'une image en couleur (0-100) 
+void modifLuminanceImage(struct fichierimage *fichier, int luminance) {
+    char nomEnregistrement[100];
+    int i, j;
+    int niveauR, niveauG, niveauB;
+
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            niveauR = fichier->image[i][j].r * luminance / 100;
+            niveauG = fichier->image[i][j].g * luminance / 100;
+            niveauB = fichier->image[i][j].b * luminance / 100;
+
+            fichier2->image[i][j].r = niveauR;
+            fichier2->image[i][j].g = niveauG;
+            fichier2->image[i][j].b = niveauB;
+        }
+    }
+
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_luminance%d_percent.bmp", luminance);
+    enregistrer(nomEnregistrement, fichier2);
+    system("open ./res/LAURETTA_PERONNE_luminance%d_percent.bmp");
+    free(fichier2);
+}
