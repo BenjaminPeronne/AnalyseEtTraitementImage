@@ -29,11 +29,16 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         printf("\n  17. Réduire le bruit d'une image");
         printf("\n  18. Filtrage");
         printf("\n  19. Modification de la luminosité d'une image");
-        printf("\n  20. Convolution de l'image");
+        printf("\n  20. Récupérations d'informations d'une images");
+        printf("\n  21. Selectionner une zone de l'image");
+        printf("\n  22. Convolution de l'image");
         printf("\n  0. Quitter");
 
         printf("\nVotre choix : ");
         scanf("%d", &choix);
+
+        system("clear");
+        system("cls");
 
         if (choix == 1) {
             // Niveau de gris
@@ -236,8 +241,32 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             modifLuminanceImage(fichier, luminosite);
             // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_ModificationLuminosite.bmp", fichier);
             free(fichier);
+        } else if (choix == 20) {
+            //  Récupérations d'informations d'une images.
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            informationSurImage(fichier);
+            free(fichier);
+        } else if (choix == 21) {
+            // Selectionner une partie d'une image
+            int x, y, x2, y2;
+            printf("Entrer les coordonnées de la zone : \n");
+            printf("x : ");
+            scanf("%d", &x);
+            printf("y : ");
+            scanf("%d", &y);
+            printf("x2 : ");
+            scanf("%d", &x2);
+            printf("y2 : ");
+            scanf("%d", &y2);
+
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            selectionnerZone(fichier, x, y, x2, y2);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Selection.bmp", fichier);
+            // system("./res/LAURETTA_PERONNE_resultat_Lena_Selection.bmp");
+            free(fichier);
+
         }
-         else if (choix == 20) {
+         else if (choix == 22) {
             // convulation de l'image |last|
 
             int i, j, diviseur;

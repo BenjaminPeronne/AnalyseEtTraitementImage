@@ -1,7 +1,7 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 // structure d'entete du fichier
 struct entete_fichier {
@@ -680,7 +680,7 @@ void rotationImage(struct fichierimage *fichier, int angle) {
     free(fichier2);
 }
 
-// réduire le bruit de l'image 
+// réduire le bruit de l'image
 void reductionBruite(struct fichierimage *fichier) {
     int i, j;
     int niveauR, niveauG, niveauB;
@@ -762,9 +762,7 @@ void filtreImage(struct fichierimage *fichier) {
     free(fichier2);
 }
 
-
-
-// modification de la luminance d'une image en couleur (0-100) 
+// modification de la luminance d'une image en couleur (0-100)
 void modifLuminanceImage(struct fichierimage *fichier, int luminance) {
     char nomEnregistrement[100];
     int i, j;
@@ -787,5 +785,127 @@ void modifLuminanceImage(struct fichierimage *fichier, int luminance) {
     sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_luminance%d_percent.bmp", luminance);
     enregistrer(nomEnregistrement, fichier2);
     system("open ./res/LAURETTA_PERONNE_luminance%d_percent.bmp");
+    free(fichier2);
+}
+
+// retourner les informations relative à l'image
+void informationSurImage(struct fichierimage *fichier) {
+    int choix = 3;
+
+    while (choix != 0) {
+        printf("\n\n Qu'elle information sur l'image voulez vous ?");
+        printf("\n  1. Information sur l'entete du fichier");
+        printf("\n  2. Information sur l'entete de l'image");
+        printf("\n  0. Quitter");
+
+        printf("\n\n Choix : ");
+        scanf("%d", &choix);
+
+        system("clear");
+        system("cls");
+        if (choix == 1) {
+            // lecture de l'ente du fichier
+            int choix1 = 2;
+
+            while (choix1 != 0) {
+                printf("\n\n Quelle information sur l'entete voulez vous ?");
+                printf("\n  1. Taille du fichier");
+                printf("\n  0. Quitter");
+
+                printf("\n\n Choix : ");
+                scanf("%d", &choix1);
+
+                system("clear");
+                system("cls");
+
+                if (choix1 == 1) {
+                    printf("\n\n Taille du fichier : %d octets", fichier->entetefichier.taille_fichier);
+                    // printf("taille fichier           :%d\n", fichier->entetefichier.taille_fichier);
+                } else if (choix1 == 0) {
+                    printf("\n\n Retour au menu principal");
+                } else {
+                    printf("\n\n Choix invalide");
+                }
+            }
+        } else if (choix == 2) {
+            // lecture de l'ente de l'image
+            int choix2 = 10;
+            while (choix2 != 0) {
+                printf("\n\n Qu'elle information sur l'image voulez vous ?");
+                printf("\n  1. taille de l'image");
+                printf("\n  2. largeur de l'image");
+                printf("\n  3. hauteur de l'image");
+
+                printf("\nVotre choix : ");
+                scanf("%d", &choix2);
+
+                system("clear");
+                system("cls");
+
+                if (choix2 == 1) {
+                    // printf("taille de l'image : %d", fichier->entetebmp.taille_image);
+                    printf("taille image             :%d\n", fichier->entetebmp.taille_image);
+                } else if (choix2 == 2) {
+                    // printf("largeur de l'image : %d", fichier->entetebmp.largeur);
+                    printf("largeur                  :%d\n", fichier->entetebmp.largeur);
+                } else if (choix2 == 3) {
+                    // printf("hauteur de l'image : %d", fichier->entetebmp.hauteur);
+                    printf("hauteur                  :%d\n", fichier->entetebmp.hauteur);
+                } else if (choix2 == 0) {
+                    printf("Au revoir  \n");
+                } else {
+                    printf("\n  erreur");
+                }
+            }
+        } else if (choix == 0) {
+            printf("Bye \n");
+        } else {
+            printf("Erreur de saisie \n");
+        }
+    }
+}
+
+// Sélectionner une portion de l'image avec les cordonnées entrées par l'utilisateur
+void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2) {
+    char nomEnregistrement[100];
+    int i, j;
+    int x1, y1;
+    
+    int x4, y4;
+
+    x1 = x;
+    y1 = y;
+    fichier->entetebmp.largeur = x2;
+    fichier->entetebmp.hauteur = y2;
+
+    if (x1 > fichier->entetebmp.largeur) {
+        x4 = x1;
+        x1 = fichier->entetebmp.largeur;
+        fichier->entetebmp.largeur = x4;
+    }
+
+    if (y1 > fichier->entetebmp.hauteur) {
+        y4 = y1;
+        y1 = fichier->entetebmp.hauteur;
+        fichier->entetebmp.hauteur = y4;
+    }
+
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur - y1, fichier->entetebmp.largeur - x1);
+
+    for (i = y1; i < fichier->entetebmp.hauteur; i++) {
+        for (j = x1; j < fichier->entetebmp.largeur; j++) {
+            fichier2->image[i - y1][j - x1].r = fichier->image[i][j].r;
+            fichier2->image[i - y1][j - x1].g = fichier->image[i][j].g;
+            fichier2->image[i - y1][j - x1].b = fichier->image[i][j].b;
+        }
+    }
+
+    // rectifier la taille de l'image
+    fichier2->entetebmp.largeur = fichier->entetebmp.largeur - x1;
+    fichier2->entetebmp.hauteur = fichier->entetebmp.hauteur - y1;
+
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_selection_%d_%d_%d_%d.bmp", x, y, x2, y2);
+    enregistrer(nomEnregistrement, fichier2);
+    // system("open ./res/LAURETTA_PERONNE_selection.bmp");
     free(fichier2);
 }
