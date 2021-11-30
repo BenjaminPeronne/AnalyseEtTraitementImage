@@ -108,11 +108,10 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         } else if (choix == 7) {
             // Image RGB vers TSL
 
-            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            // imageRGBVersTSL(fichier);
-            // // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_RGV.bmp", fichier);
-            // // system("./res/LAURETTA_PERONNE_resultat_Lena_RGV.bmp");
-            // free(fichier);
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            passageRVBTsl(fichier);
+            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_RGV.bmp", fichier);
+            // system("./res/LAURETTA_PERONNE_resultat_Lena_RGV.bmp");            
 
         } else if (choix == 8) {
             // Image TSL vers RGB
@@ -245,28 +244,28 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             free(fichier);
         } else if (choix == 19) {
             // Filtre
-            // int matrice[3][3];
-            // int i, j;
+            int matrice[3][3];
+            int i, j;
 
-            // printf("Entrer la matrice : \n");
-            // for (i = 0; i < 3; i++) {
-            //     for (j = 0; j < 3; j++) {
-            //         scanf("%d", &matrice[i][j]);
-            //     }
-            // }
+            printf("Entrer la matrice : \n");
+            for (i = 0; i < 3; i++) {
+                for (j = 0; j < 3; j++) {
+                    scanf("%d", &matrice[i][j]);
+                }
+            }
 
-            // printf("\n");
-            // printf("voici le masque saisie");
-            // printf("\n");
-            // for (i = 0; i < 3; i++) {
-            //     for (j = 0; j < 3; j++) {
-            //         printf("%4d ", matrice[i][j]);
-            //     }
-            //     printf("\n");
-            // }
+            printf("\n");
+            printf("voici le masque saisie");
+            printf("\n");
+            for (i = 0; i < 3; i++) {
+                for (j = 0; j < 3; j++) {
+                    printf("%4d ", matrice[i][j]);
+                }
+                printf("\n");
+            }
 
             fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            filtreImage(fichier);
+            filtreImage(fichier, matrice);
 
         } else if (choix == 20) {
             int luminosite = 0;
@@ -317,12 +316,8 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         } else if (choix == 25) {
             // egalisation histogramme
 
-            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            // histogrammeEgalisation(fichier);
-
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_EgalisationHistogramme.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_EgalisationHistogramme.bmp");
-            // free(fichier);            
+            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            histogrammeEgalisation(fichier);            
         } else if (choix == 26) {
             // convulation de l'image |last|
 

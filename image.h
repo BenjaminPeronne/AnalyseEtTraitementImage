@@ -561,6 +561,7 @@ void monochromeImage(struct fichierimage *fichier, char couleur) {
     free(fichier2);
 }
 
+// Convolutions d'une image avec un masque de convolution.
 void convolution(struct fichierimage *fichier, int matrice[3][3], int diviseur) {
     int i, j, k, l;
     int niveau;
@@ -586,32 +587,67 @@ void convolution(struct fichierimage *fichier, int matrice[3][3], int diviseur) 
             niveauG = niveauG / diviseur;
             niveauB = niveauB / diviseur;
 
-            // Limitation des valeurs de l'image
-            // if (niveauR < 0) {
-            //     niveauR = 0;
-            // }
-            // if (niveauR > 255) {
-            //     niveauR = 255;
-            // }
-            // if (niveauG < 0) {
-            //     niveauG = 0;
-            // }
-            // if (niveauG > 255) {
-            //     niveauG = 255;
-            // }
-            // if (niveauB < 0) {
-            //     niveauB = 0;
-            // }
-            // if (niveauB > 255) {
-            //     niveauB = 255;
-            // }
-
             // Affectation des niveaux de l'image
             fichier->image[i][j].r = niveauR;
             fichier->image[i][j].g = niveauG;
             fichier->image[i][j].b = niveauB;
         }
     }
+}
+
+// Filtrage de l'image par un masque de convolution (matrice 3x3)
+void filtreImage(struct fichierimage *fichier, int masque[3][3]) {
+    char nomEnregistrement[100];
+    int i, j, k, l;
+    int sommeR, sommeG, sommeB;
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
+
+    for (i = 1; i < fichier->entetebmp.hauteur - 1; i++) {
+        for (j = 1; j < fichier->entetebmp.largeur - 1; j++) {
+            sommeR = 0;
+            sommeG = 0;
+            sommeB = 0;
+
+            for (k = -1; k <= 1; k++) {
+                for (l = -1; l <= 1; l++) {
+                    sommeR += masque[k + 1][l + 1] * fichier->image[i + k][j + l].r;
+                    sommeG += masque[k + 1][l + 1] * fichier->image[i + k][j + l].g;
+                    sommeB += masque[k + 1][l + 1] * fichier->image[i + k][j + l].b;
+                }
+            }
+
+            if (sommeR > 255) {
+                fichier2->image[i][j].r = 255;
+            } else if (sommeR < 0) {
+                fichier2->image[i][j].r = 0;
+            } else {
+                fichier2->image[i][j].r = sommeR;
+            }
+
+            if (sommeG > 255) {
+                fichier2->image[i][j].g = 255;
+            } else if (sommeG < 0) {
+                fichier2->image[i][j].g = 0;
+            } else {
+                fichier2->image[i][j].g = sommeG;
+            }
+
+            if (sommeB > 255) {
+                fichier2->image[i][j].b = 255;
+            } else if (sommeB < 0) {
+                fichier2->image[i][j].b = 0;
+            } else {
+                fichier2->image[i][j].b = sommeB;
+            }
+
+        }
+    }
+
+    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_filtreImage_masque_%d_%d_%d_%d.bmp", masque[0][0], masque[0][1], masque[0][2], masque[1][0]);
+    enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_filtreImage_masque_%d_%d_%d_%d.bmp", masque[0][0], masque[0][1], masque[0][2], masque[1][0]);
+    system(nomEnregistrement);
+    free(fichier2);
 }
 
 // Supperposition d'une image sur une autre
@@ -753,25 +789,6 @@ void reductionBruite(struct fichierimage *fichier) {
 
     enregistrer("./res/LAURETTA_PERONNE_reduireBruit.bmp", fichier2);
     system("open ./res/LAURETTA_PERONNE_reduireBruit.bmp");
-    free(fichier2);
-}
-
-// Fonction permettant le filtre d'une image en appliquant un masque de convolution à l'image
-void filtreImage(struct fichierimage *fichier) {
-    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
-
-    int i, j;
-
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
-        for (j = 0; j < fichier->entetebmp.largeur; j++) {
-            fichier2->image[i][j].r = fichier->image[i][j].r + (fichier->image[i][j].r * 0.1);
-            fichier2->image[i][j].g = fichier->image[i][j].g + (fichier->image[i][j].g * 0.1);
-            fichier2->image[i][j].b = fichier->image[i][j].b + (fichier->image[i][j].b * 0.1);
-        }
-    }
-
-    enregistrer("./res/LAURETTA_PERONNE_filtre.bmp", fichier2);
-    system("open ./res/LAURETTA_PERONNE_filtre.bmp");
     free(fichier2);
 }
 
@@ -1180,6 +1197,116 @@ void filtreMoyenneur(struct fichierimage *fichier) {
     free(fichier);
 }
 
+
+
 // Histogramme de l'image et egalisation de l'image
 void histogrammeEgalisation(struct fichierimage *fichier) {
+        int i, j;
+    int r, g, b;
+    int histoR[256];
+    int histoG[256];
+    int histoB[256];
+    int maxR = 0;
+    int maxG = 0;
+    int maxB = 0;
+    int max = 0;
+    int choix = 6;
+
+    // initialisation des tableaux à 0 pour les histogrammes
+    for (i = 0; i < 256; i++) {
+        histoR[i] = 0;
+        histoG[i] = 0;
+        histoB[i] = 0;
+    }
+
+    // calcul des histogrammes
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {     // i = ligne
+        for (j = 0; j < fichier->entetebmp.largeur; j++) { // j = colonne
+            // copie de la couleur de l'image dans la nouvelle image
+            r = fichier->image[i][j].r;
+            g = fichier->image[i][j].g;
+            b = fichier->image[i][j].b;
+
+            // ajout d'un pixel dans le tableau de l'histogramme
+            histoR[r]++;
+            histoG[g]++;
+            histoB[b]++;
+        }
+    }
+
+    for (i = 0; i < 256; i++) { // i = ligne
+        // si le nombre de pixel de l'histogramme est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
+        if (histoR[i] > maxR) {
+            maxR = histoR[i];
+        }
+        if (histoG[i] > maxG) {
+            maxG = histoG[i];
+        }
+        if (histoB[i] > maxB) {
+            maxB = histoB[i];
+        }
+    }
+
+    // on met le max à la valeur du max de l'histogramme de la couleur rouge (car on veut que les histogrammes soient de même taille)
+    max = maxR;
+    // si le max de l'histogramme de la couleur verte est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
+    if (maxG > max) {
+        max = maxG;
+    }
+    // si le max de l'histogramme de la couleur bleue est plus grand que le max alors on met le max à la valeur de l'histogramme actuel
+    if (maxB > max) {
+        max = maxB;
+    }
+
+    // Egalisation de l'histogramme de l'image
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {     // i = ligne
+        for (j = 0; j < fichier->entetebmp.largeur; j++) { // j = colonne
+            // copie de la couleur de l'image dans la nouvelle image
+            r = fichier->image[i][j].r;
+            g = fichier->image[i][j].g;
+            b = fichier->image[i][j].b;
+
+            // calcul de la nouvelle valeur de l'image
+            fichier->image[i][j].r = (int)((r * 255) / max);
+            fichier->image[i][j].g = (int)((g * 255) / max);
+            fichier->image[i][j].b = (int)((b * 255) / max);
+        }
+    }
+
+    // Enregistrement de l'image égalisée
+    enregistrer("./res/LAURETTA_PERONNE_histoEgalisation.bmp", fichier);
+    system("open ./res/LAURETTA_PERONNE_histoEgalisation.bmp");
+    free(fichier);
+}
+
+// Passage d'une image RVB à TSL enregistement de l'image convertie
+void passageRVBTsl(struct fichierimage *fichier) {
+    int i, j;
+    int r, g, b;
+    int rTsl, gTsl, bTsl;
+
+    // Passage d'une image RVB à TSL
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {     // i = ligne
+        for (j = 0; j < fichier->entetebmp.largeur; j++) { // j = colonne
+            // copie de la couleur de l'image dans la nouvelle image
+            r = fichier->image[i][j].r;
+            g = fichier->image[i][j].g;
+            b = fichier->image[i][j].b;
+
+            // calcul de la nouvelle valeur de l'image
+            rTsl = (int)(0.299 * r + 0.587 * g + 0.114 * b);
+            gTsl = (int)(0.596 * r - 0.274 * g - 0.322 * b);
+            bTsl = (int)(0.211 * r - 0.523 * g + 0.312 * b);
+
+            // copie de la nouvelle couleur dans l'image
+            fichier->image[i][j].r = rTsl;
+            fichier->image[i][j].g = gTsl;
+            fichier->image[i][j].b = bTsl;
+        }
+    }
+    
+    // Enregistrement de l'image convertie
+    enregistrer("./res/LAURETTA_PERONNE_passageRVBTsl.bmp", fichier);
+    system("open ./res/LAURETTA_PERONNE_passageRVBTsl.bmp");
+    free(fichier);
 }
