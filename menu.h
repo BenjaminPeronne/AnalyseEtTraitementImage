@@ -1,4 +1,5 @@
 #include "image.h"
+// #include "LAURETTA_PERONNE_image.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -308,21 +308,21 @@ struct fichierimage *nouveau(int largeur, int hauteur) {
 
 // fonction permetant de mettre une image en niveau de gris
 void imageVersNiveauDeGris(struct fichierimage *fichier, char nom[50], char prenom[50]) {
-    char nomEnregistrement[100];
-    char extension[5] = ".bmp";
+    char nomEnregistrement[100]; // nom de l'image enregistrer
+    char extension[5] = ".bmp"; // extension de l'image enregistrer
     // --------------------------------------------------
-    int i, j;
-    int niveau;
-
-    for (i = fichier->entetebmp.hauteur - 1; i >= 0; i--) {
-        for (j = 0; j < fichier->entetebmp.largeur; j++) {
-            niveau = (fichier->image[i][j].r + fichier->image[i][j].g + fichier->image[i][j].b) / 3;
-            fichier->image[i][j].r = niveau;
+    int i, j; // compteur
+    int niveau; // niveau de gris
+ 
+    for (i = fichier->entetebmp.hauteur - 1; i >= 0; i--) { // parcours de l'image
+        for (j = 0; j < fichier->entetebmp.largeur; j++) { // parcours de l'image
+            niveau = (fichier->image[i][j].r + fichier->image[i][j].g + fichier->image[i][j].b) / 3; // calcul du niveau de gris de l'image (moyenne des 3 couleurs)
+            fichier->image[i][j].r = niveau; 
             fichier->image[i][j].g = niveau;
             fichier->image[i][j].b = niveau;
         }
     }
-
+    // Enregistrement de l'image et affichage de l'image
     sprintf(nomEnregistrement, "./res/%s_%s_image_niveauDeGris%s", nom, prenom, extension);
     enregistrer(nomEnregistrement, fichier);
     sprintf(nomEnregistrement, "open ./res/%s_%s_image_niveauDeGris%s", nom, prenom, extension);
@@ -341,18 +341,19 @@ void imageVersMirroir(struct fichierimage *fichier,  char nom[50], char prenom[5
 
     for (i = 0; i < fichier->entetebmp.hauteur; i++) {
         for (j = 0; j < fichier->entetebmp.largeur / 2; j++) {
-            niveau = fichier->image[i][j].r;
-            fichier->image[i][j].r = fichier->image[i][fichier->entetebmp.largeur - 1 - j].r;
-            fichier->image[i][fichier->entetebmp.largeur - 1 - j].r = niveau;
-            niveau = fichier->image[i][j].g;
-            fichier->image[i][j].g = fichier->image[i][fichier->entetebmp.largeur - 1 - j].g;
-            fichier->image[i][fichier->entetebmp.largeur - 1 - j].g = niveau;
-            niveau = fichier->image[i][j].b;
-            fichier->image[i][j].b = fichier->image[i][fichier->entetebmp.largeur - 1 - j].b;
-            fichier->image[i][fichier->entetebmp.largeur - 1 - j].b = niveau;
+            // on inverse les couleurs
+            niveau = fichier->image[i][j].r; // on recupere la couleur rouge
+            fichier->image[i][j].r = fichier->image[i][fichier->entetebmp.largeur - 1 - j].r; // on met la couleur rouge de l'image en bas a gauche
+            fichier->image[i][fichier->entetebmp.largeur - 1 - j].r = niveau; // on met la couleur rouge de l'image en haut a droite
+            niveau = fichier->image[i][j].g; // on recupere la couleur verte
+            fichier->image[i][j].g = fichier->image[i][fichier->entetebmp.largeur - 1 - j].g; // on met la couleur verte de l'image en bas a gauche
+            fichier->image[i][fichier->entetebmp.largeur - 1 - j].g = niveau; // on met la couleur verte de l'image en haut a droite
+            niveau = fichier->image[i][j].b; // on recupere la couleur bleue
+            fichier->image[i][j].b = fichier->image[i][fichier->entetebmp.largeur - 1 - j].b; // on met la couleur bleue de l'image en bas a gauche
+            fichier->image[i][fichier->entetebmp.largeur - 1 - j].b = niveau; // on met la couleur bleue de l'image en haut a droite
         }
     }
-
+    // Enregistrement de l'image et affichage de l'image
     sprintf(nomEnregistrement, "./res/%s_%s_image_mirroir%s", nom, prenom, extension);
     enregistrer(nomEnregistrement, fichier);
     sprintf(nomEnregistrement, "open ./res/%s_%s_image_mirroir%s", nom, prenom, extension);
@@ -362,20 +363,21 @@ void imageVersMirroir(struct fichierimage *fichier,  char nom[50], char prenom[5
 
 // fonction permettant de créer une image symetrique
 void imageVersSymetrie(struct fichierimage *fichier, char nom[50], char prenom[50]) {
-    char nomEnregistrement[100];
-    char extension[5] = ".bmp";
+    char nomEnregistrement[100]; // nom de l'image enregistrer
+    char extension[5] = ".bmp"; // extension de l'image enregistrer
     // --------------------------------------------------
-    int i, j;
+    int i, j; // compteur
 
-    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.largeur, fichier->entetebmp.hauteur);
+    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.largeur, fichier->entetebmp.hauteur); // création d'une image de même taille que l'image à symétriser
 
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
-        for (j = fichier->entetebmp.largeur / 2; j >= 0; j--) {
-            fichier2->image[i][j].r = fichier->image[i][j].r;
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) { // parcours de l'image
+        for (j = fichier->entetebmp.largeur / 2; j >= 0; j--) { // parcours de l'image
+            fichier2->image[i][j].r = fichier->image[i][j].r; // on recopie les couleurs de l'image dans l'image symétrique
             fichier2->image[i][j].g = fichier->image[i][j].g;
             fichier2->image[i][j].b = fichier->image[i][j].b;
 
-            fichier2->image[i][fichier->entetebmp.hauteur - j - 1].r = fichier->image[i][j].r;
+            // on inverse les couleurs
+            fichier2->image[i][fichier->entetebmp.hauteur - j - 1].r = fichier->image[i][j].r; 
             fichier2->image[i][fichier->entetebmp.hauteur - j - 1].g = fichier->image[i][j].g;
             fichier2->image[i][fichier->entetebmp.hauteur - j - 1].b = fichier->image[i][j].b;
         }
@@ -389,6 +391,7 @@ void imageVersSymetrie(struct fichierimage *fichier, char nom[50], char prenom[5
     //     }
     // }
 
+    // Enregistrement de l'image et affichage de l'image
     sprintf(nomEnregistrement, "./res/%s_%s_image_symetrie%s", nom, prenom, extension);
     enregistrer(nomEnregistrement, fichier2);
     sprintf(nomEnregistrement, "open ./res/%s_%s_image_symetrie%s", nom, prenom, extension);
@@ -409,7 +412,7 @@ void pivoterImageDroit(struct fichierimage *fichier, char nom[50], char prenom[5
 
     for (i = 0; i < fichier->entetebmp.hauteur; i++) {
         for (j = 0; j < fichier->entetebmp.largeur; j++) {
-            fichier2->image[i][j].r = fichier->image[j][i].r;
+            fichier2->image[i][j].r = fichier->image[j][i].r; 
             fichier2->image[i][j].g = fichier->image[j][i].g;
             fichier2->image[i][j].b = fichier->image[j][i].b;
         }
@@ -442,8 +445,8 @@ void pivoterImageGauche(struct fichierimage *fichier, char nom[50], char prenom[
     for (i = 0; i < fichier->entetebmp.hauteur / 2; i++) {
         for (j = 0; j < fichier->entetebmp.largeur / 2; j++) {
             pixel = fichier->image[i][j];
-            fichier->image[i][j] = fichier->image[fichier->entetebmp.hauteur - 1 - j][i];
-            fichier->image[fichier->entetebmp.hauteur - 1 - j][i] = fichier->image[fichier->entetebmp.hauteur - 1 - i][fichier->entetebmp.largeur - 1 - j];
+            fichier->image[i][j] = fichier->image[fichier->entetebmp.hauteur - 1 - j][i];             
+            fichier->image[fichier->entetebmp.hauteur - 1 - j][i] = fichier->image[fichier->entetebmp.hauteur - 1 - i][fichier->entetebmp.largeur - 1 - j]; 
             fichier->image[fichier->entetebmp.hauteur - 1 - i][fichier->entetebmp.largeur - 1 - j] = fichier->image[j][fichier->entetebmp.hauteur - 1 - i];
             fichier->image[j][fichier->entetebmp.hauteur - 1 - i] = pixel;
         }

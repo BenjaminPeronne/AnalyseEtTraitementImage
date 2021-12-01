@@ -1,11 +1,31 @@
 // #include "image.h"
 #include "menu.h"
+// #include "LAURETTA_PERONNE_menu.h"
+
 //------------------------------------------------------------------------------
-// nom : LAURETTA-PERONNE
-// prenom : Aymerick
-//
 // Code source pour le projet d'UE035
-// description : (les fonctions sont d�finit dans image.h)
+//
+// Nom : LAURETTA-PERONNE
+// Prenom : Aymerick
+//
+// Ce programme inclut deux header : image.h et menu.h (qui porte le même préfixe suite à la consigne de l'UE035)
+// Tel que : #include "LAURETTA_PERONNE_menu.h" pour inclure le menu et #include "LAURETTA_PERONNE_image.h" pour inclure les fonctions de l'image
+//
+// |!| Important |!|
+// Afin de pouvoir utiliser ce programme, il faut créer un dossier "res" dans lequel se trouvera les résultats (les fichiers .bmp)
+// Tel que : "./res/LAURETTA-PERONNE_1.bmp" par exemple.
+// |!| Important |!|
+//
+// L'image de base est "Lena.bmp"
+//
+// |!| Important |!|
+// L'image choisie par l'utilisateur doit être à la racine du dossier du programme.
+// Tel que : "Lena.bmp" par exemple.
+// |!| Important |!|
+//
+//-------------------------------------
+//
+// description : (les fonctions sont définit dans image.h)
 //
 // les pointeurs images dans ce code sont de type : struct fichierimage *
 //
@@ -47,9 +67,39 @@
 // et un diviseur
 // la fonction ne retourne rien
 //
-// void imageVersNegatif(struct fichierimage *fichier)
+// void imageNegative(struct fichierimage *fichier)
 // permet de creer une image en mémoire de négatif, la fonction prend en
 // parametre un pointeur de type : struct fichierimage *
+// la fonction ne retourne rien
+//
+// void rotation(struct fichierimage *fichier, int angle)
+// permet de creer une image en mémoire de rotation, la fonction prend en
+// parametre un pointeur de type : struct fichierimage * et un angle
+// la fonction ne retourne rien
+//
+// void seuillage(struct fichierimage *fichier, int seuil)
+// permet de creer une image en mémoire de seuillage, la fonction prend en
+// parametre un pointeur de type : struct fichierimage * et un seuil
+// la fonction ne retourne rien
+//
+// void symettrie(struct fichierimage *fichier)
+// permet de creer une image en mémoire de symétrie, la fonction prend en
+// parametre un pointeur de type : struct fichierimage *
+// la fonction ne retourne rien
+//
+// void inversionCouleur(struct fichierimage *fichier)
+// permet de creer une image en mémoire d'inversion de couleur, la fonction prend en
+// parametre un pointeur de type : struct fichierimage *
+// la fonction ne retourne rien
+//
+// void reductionImage(struct fichierimage *fichier, int echelle)
+// permet de creer une image en mémoire est la réduit la fonction prend en
+// parametre un pointeur de type : struct fichierimage * et une échelle de type int
+// la fonction ne retourne rien
+//
+// void agrandissementImage(struct fichierimage *fichier, int echelle)
+// permet de creer une image en mémoire est la agrandit la fonction prend en
+// parametre un pointeur de type : struct fichierimage * et une échelle de type int
 // la fonction ne retourne rien
 //
 //------------------------------------------------------------------------------
