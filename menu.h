@@ -197,12 +197,30 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             pivoterImageGauche(fichier, nom, prenom);
         } else if (choix == 7) {
             // Image RGB vers TSL
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            passageRVBTsl(fichier);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_RGV.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_RGV.bmp");            
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
 
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            passageRVBTsl(fichier, nom, prenom);
         } else if (choix == 8) {
             // Image TSL vers RGB
 
@@ -227,85 +245,227 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             // free(fichier);
         } else if (choix == 10) {
             // Image négative
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            imageNegative(fichier);
-            enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Negatif.bmp", fichier);
-            system("open ./res/LAURETTA_PERONNE_resultat_Lena_Negatif.bmp");
-            free(fichier);
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
 
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            imageNegative(fichier, nom, prenom);        
         } else if (choix == 11) {
             // Seuillage de l'image
             int seuil = 0;
             char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
             printf("Entrer le seuil : ");
             scanf("%d", &seuil);
 
-            sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_resultat_Lena_Seuillage_%d.bmp", seuil);
-
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            seuillage(fichier, seuil);
-
-            enregistrer(nomEnregistrement, fichier);
-            sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_resultat_Lena_Seuillage_%d.bmp", seuil);
-            system(nomEnregistrement);
-            free(fichier);
+            seuillage(fichier, nom, prenom, seuil);
         } else if (choix == 12) {
             // Inversion des couleurs d'une image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            inversionCouleur(fichier);
-            enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_InversionCouleur.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_InversionCouleur.bmp");
-            free(fichier);
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            fichier = charger(nomEnregistrement);
+
+            inversionCouleur(fichier, nom, prenom);        
         } else if (choix == 13) {
             // Réduction de l'image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
 
             int echelle = 0;
             printf("Entrer l'échelle : ");
             scanf("%d", &echelle);
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            reductionImage(fichier, echelle);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Reduction.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_Reduction.bmp");
-            free(fichier);
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+                    
+            fichier = charger(nomEnregistrement);
+
+            reductionImage(fichier, nom, prenom, echelle);
+            // free(fichier);
         } else if (choix == 14) {
             // Agrandissement de l'image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+            
             int echelle = 0;
 
             printf("Entrer l'échelle : ");
             scanf("%d", &echelle);
 
-            // fichier = charger("LAURETTA_PERONNE_resultat_Lena_Reduction.bmp");
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            agrandissementImage(fichier, echelle);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Agrandissement.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_Agrandissement.bmp");
-            free(fichier);
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+        
+            agrandissementImage(fichier, nom, prenom, echelle);
         } else if (choix == 15) {
             // monochrome d'une image en paramètre un canal
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+        
             // Entrer une couleur  soit R ou G ou B
             char couleur;
 
             printf("Entrer la couleur : \n");
             scanf(" %c", &couleur);
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            monochromeImage(fichier, couleur);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Monochrome.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_Monochrome.bmp");
-            free(fichier);
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            monochromeImage(fichier, nom, prenom, couleur);
         } else if (choix == 16) {
             // Supperposition d'une image sur une autre
+            char nomEnregistrement1[100];
+            char nomEnregistrement2[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            fichier2 = charger("LAURETTA_PERONNE_Paysage.bmp");
+            // Entrer le nom du fichier à charger
+            char nomFichier1[100];
+            char nomFichier2[100];
 
-            superpositionImage(fichier, fichier2);
+            printf("Entrer le nom du premier fichier à charger : ");
+            scanf("%s", nomFichier1);
+
+            sprintf(nomEnregistrement1, "%s%s", nomFichier1, extension);
+
+            printf("Entrer le nom du deuxième fichier à charger : ");
+            scanf("%s", nomFichier2);
+
+            sprintf(nomEnregistrement2, "%s%s", nomFichier2, extension);
+            
+            fichier = charger(nomEnregistrement1);
+            fichier2 = charger(nomEnregistrement2);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            // fichier2 = charger("LAURETTA_PERONNE_Paysage.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            supperposition(fichier, fichier2, nom, prenom);
 
             // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Superposition.bmp", fichier);
             // system("./res/LAURETTA_PERONNE_resultat_Lena_Superposition.bmp");
@@ -313,30 +473,80 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             free(fichier2);
         } else if (choix == 17) {
             // Rotation Image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+            
             int angle = 0;
             printf("Entrer l'angle : ");
             scanf("%d", &angle);
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            rotationImage(fichier, angle);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Rotation.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_Rotation.bmp");
-            free(fichier);
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            rotationImage(fichier, nom, prenom, angle);
         } else if (choix == 18) {
             // Réduction de bruite d'une image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            reductionBruite(fichier);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_ReductionBruite.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_ReductionBruite.bmp");
-            free(fichier);
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            reductionBruite(fichier, nom, prenom);
         } else if (choix == 19) {
-            // Filtre
+            // Filtre                             
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+
             int matrice[3][3];
             int i, j;
-
+            
+            printf("\n");
+            printf("Entrer une matrice 3x3 séparer par des espaces\n");
+            printf("Par exemple : 1 2 1 2 4 2 1 2 1 \n");
             printf("Entrer la matrice : \n");
             for (i = 0; i < 3; i++) {
                 for (j = 0; j < 3; j++) {
@@ -354,27 +564,73 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
                 printf("\n");
             }
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            filtreImage(fichier, matrice);
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            char prenom[50];
 
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            printf("Entrer votre prenom : ");
+            scanf("%s", prenom);
+
+            filtreImage(fichier, nom, prenom, matrice);            
         } else if (choix == 20) {
             // luminosite d'une image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
 
             int luminosite = 0;
             printf("Entrer la luminosité  entre 0 et 100 : ");
             scanf("%d", &luminosite);
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            modifLuminanceImage(fichier, luminosite);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_ModificationLuminosite.bmp", fichier);
-            free(fichier);
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];            
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            modifLuminanceImage(fichier, nom, luminosite);            
+            // modifLuminanceImage(fichier, luminosite);                        
         } else if (choix == 21) {
             //  Récupérations d'informations d'une images.
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+        
             informationSurImage(fichier);
             free(fichier);
         } else if (choix == 22) {
             // Selectionner une partie d'une image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+
             int x, y, x2, y2;
             printf("Entrer les coordonnées de la zone : \n");
             printf("x : ");
@@ -386,46 +642,100 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             printf("y2 : ");
             scanf("%d", &y2);
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            selectionnerZone(fichier, x, y, x2, y2);
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];            
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            
+            selectionnerZone(fichier, nom, x, y, x2, y2);
+
             // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Selection.bmp", fichier);
             // system("./res/LAURETTA_PERONNE_resultat_Lena_Selection.bmp");
             free(fichier);
 
         } else if (choix == 23) {
             // Appel de la fonction permettant le calcul de l'histogramme d'une image
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
             calculHistogramme(fichier);
         } else if (choix == 24) {
             // Filtre moyenneur
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            filtreMoyenneur(fichier);
-            // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_FiltreMoyenneur.bmp", fichier);
-            // system("./res/LAURETTA_PERONNE_resultat_Lena_FiltreMoyenneur.bmp");
-            // free(fichier);
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);            
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];            
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            filtreMoyenneur(fichier, nom);
         } else if (choix == 25) {
             // egalisation histogramme
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
 
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
-            histogrammeEgalisation(fichier);            
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];            
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+
+            histogrammeEgalisation(fichier, nom);                
         } else if (choix == 26) {
             // convulation de l'image |last|
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+            // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
+
 
             int i, j, diviseur;
             int masque[3][3];
             // int masque[3][3] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
             // int masque[3][3] = {{1, 2, 1}, {2, 4, 2}, {1, 2, 1}};
-
-            // Entrer le nom du fichier à charger
-            // char nom[100];
-            // printf("Entrer le nom du fichier à charger : ");
-            // scanf("%s", nom);
-
-            // charger l'image
-            // fichier = charger(nom);
-            fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
             // Normalisation de l'image en fonction de la matrice de convolution
             printf("Valeur du diviseur afin de réalisation la normalisation  : \n");
@@ -448,12 +758,12 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
                 printf("\n");
             }
 
-            // convolution(fichier, masque, diviseur);
-            convolution(fichier, masque, diviseur);
-            enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Convolution.bmp", fichier);
-            system("./res/LAURETTA_PERONNE_resultat_Lena_Convolution.bmp");
-            free(fichier);
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
 
+            convolution(fichier, nom, masque, diviseur);            
         } else if (choix == 0) {
             printf("Au revoir  \n");
         } else {

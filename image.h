@@ -460,7 +460,10 @@ void pivoterImageGauche(struct fichierimage *fichier, char nom[50], char prenom[
 // Calcul du pourcentage de couleur d'une image (RVB), teine, saturation et luminance
 
 // Création d'une image négative
-void imageNegative(struct fichierimage *fichier) {
+void imageNegative(struct fichierimage *fichier, char nom[50], char prenom[50]) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
 
     for (i = 0; i < fichier->entetebmp.hauteur; i++) {
@@ -470,10 +473,20 @@ void imageNegative(struct fichierimage *fichier) {
             fichier->image[i][j].b = 255 - fichier->image[i][j].b;
         }
     }
+
+    sprintf(nomEnregistrement, "./res/%s_%s_image_negative%s", nom, prenom, extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_image_negative%s", nom, prenom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_image_negative%s", nom, prenom, extension);
+    system(nomEnregistrement);
+    free(fichier);
 }
 
 // Seuillage d'une image
-void seuillage(struct fichierimage *fichier, int seuil) {
+void seuillage(struct fichierimage *fichier, char nom[50], char prenom[50], int seuil) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
 
     for (i = 0; i < fichier->entetebmp.hauteur; i++) {
@@ -497,10 +510,20 @@ void seuillage(struct fichierimage *fichier, int seuil) {
             }
         }
     }
+
+    sprintf(nomEnregistrement, "./res/%s_%s_image_seuillage%s", nom, prenom, extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_image_seuillage%s", nom, prenom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_image_seuillage%s", nom, prenom, extension);
+    system(nomEnregistrement);
+    free(fichier);
 }
 
 // Inversion des couleurs d'une image
-void inversionCouleur(struct fichierimage *fichier) {
+void inversionCouleur(struct fichierimage *fichier, char nom[50], char prenom[50]) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
 
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
@@ -521,13 +544,19 @@ void inversionCouleur(struct fichierimage *fichier) {
         }
     }
 
-    // enregistrer("./res/LAURETTA_PERONNE_inversionCouleur.bmp", fichier2);
-    free(fichier2);
+    sprintf(nomEnregistrement, "./res/%s_%s_image_inversion_couleur%s", nom, prenom, extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_image_inversion_couleur%s", nom, prenom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_image_inversion_couleur%s", nom, prenom, extension);
+    system(nomEnregistrement);
+    free(fichier);
 }
 
 // Réduction d'une image (changement d'échelle)
-void reductionImage(struct fichierimage *fichier, int echelle) {
+void reductionImage(struct fichierimage *fichier, char nom[50], char prenom[50], int echelle) {
     char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur / echelle, fichier->entetebmp.largeur / echelle);
 
@@ -538,18 +567,19 @@ void reductionImage(struct fichierimage *fichier, int echelle) {
             fichier2->image[i / echelle][j / echelle].b = fichier->image[i][j].b;
         }
     }
-
-    // enregistrer("./res/LAURETTA_PERONNE_reductionImage.bmp", fichier2);
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_reductionImage_echelle_%d.bmp", echelle);
+    sprintf(nomEnregistrement, "./res/%s_%s_image_reduction_echelle_%d%s", nom, prenom, echelle,extension);
     enregistrer(nomEnregistrement, fichier2);
-    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_reductionImage_echelle_%d.bmp", echelle);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_image_reduction_echelle_%d%s", nom, prenom, echelle,extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_image_reduction_echelle_%d%s", nom, prenom, echelle,extension);
     system(nomEnregistrement);
-    free(fichier2);
+    free(fichier);
 }
 
 // Agrandissement d'une image (changement d'échelle)
-void agrandissementImage(struct fichierimage *fichier, int echelle) {
+void agrandissementImage(struct fichierimage *fichier,char nom[50], char prenom[50], int echelle) {
     char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur * echelle, fichier->entetebmp.largeur * echelle);
 
@@ -565,17 +595,19 @@ void agrandissementImage(struct fichierimage *fichier, int echelle) {
             }
         }
     }
-
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_agrandissementImage_echelle_%d.bmp", echelle);
+    sprintf(nomEnregistrement, "./res/%s_%s_image_agrandissement_echelle_%d%s", nom, prenom, echelle, extension);
     enregistrer(nomEnregistrement, fichier2);
-    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_agrandissementImage_echelle_%d.bmp", echelle);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_image_agrandissement_echelle_%d%s", nom, prenom, echelle, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_image_agrandissement_echelle_%d%s", nom, prenom, echelle, extension);
     system(nomEnregistrement);
-    free(fichier2);
+    free(fichier);
 }
 
 // Transformation d'une image en monochrome.
-void monochromeImage(struct fichierimage *fichier, char couleur) {
+void monochromeImage(struct fichierimage *fichier, char nom[50], char prenom[50], char couleur) {
     char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
 
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
@@ -596,17 +628,20 @@ void monochromeImage(struct fichierimage *fichier, char couleur) {
                 fichier2->image[i][j].b = fichier->image[i][j].b;
             }
         }
-    }
-
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_monochromeImage_couleur_%c.bmp", couleur);
+    }  
+    sprintf(nomEnregistrement, "./res/%s_%s_image_monochrome_%c%s", nom, prenom, couleur, extension);
     enregistrer(nomEnregistrement, fichier2);
-    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_monochromeImage_couleur_%c.bmp", couleur);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_image_monochrome_%c%s", nom, prenom, couleur, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_image_monochrome_%c%s", nom, prenom, couleur, extension);
     system(nomEnregistrement);
-    free(fichier2);
+    free(fichier);
 }
 
 // Convolutions d'une image avec un masque de convolution.
-void convolution(struct fichierimage *fichier, int matrice[3][3], int diviseur) {
+void convolution(struct fichierimage *fichier, char nom[50], int matrice[3][3], int diviseur) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j, k, l;
     int niveau;
     int niveauR, niveauG, niveauB;
@@ -637,11 +672,19 @@ void convolution(struct fichierimage *fichier, int matrice[3][3], int diviseur) 
             fichier->image[i][j].b = niveauB;
         }
     }
+    sprintf(nomEnregistrement, "./res/%s_image_convolution_%d%s", nom, matrice[1][1], extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_image_convolution_%d%s", nom, matrice[1][1], extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_image_convolution_%d%s", nom, matrice[1][1], extension);
+    system(nomEnregistrement);
+    free(fichier);
 }
 
 // Filtrage de l'image par un masque de convolution (matrice 3x3)
-void filtreImage(struct fichierimage *fichier, int masque[3][3]) {
+void filtreImage(struct fichierimage *fichier, char nom[50], char prenom[50], int masque[3][3]) {
     char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j, k, l;
     int sommeR, sommeG, sommeB;
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
@@ -686,12 +729,37 @@ void filtreImage(struct fichierimage *fichier, int masque[3][3]) {
         }
     }
 
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_filtreImage_masque_%d_%d_%d_%d.bmp", masque[0][0], masque[0][1], masque[0][2], masque[1][0]);
+    sprintf(nomEnregistrement, "./res/%s_%s_image_filtre_%d%s", nom, prenom, masque[1][1], extension);
     enregistrer(nomEnregistrement, fichier2);
-    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_filtreImage_masque_%d_%d_%d_%d.bmp", masque[0][0], masque[0][1], masque[0][2], masque[1][0]);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_image_filtre_%d%s", nom, prenom, masque[1][1], extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_image_filtre_%d%s", nom, prenom, masque[1][1], extension);
     system(nomEnregistrement);
-    free(fichier2);
+    free(fichier);
 }
+
+// Supperposition d'images (fusion de deux images)
+void supperposition(struct fichierimage *fichier1, struct fichierimage *fichier2, char nom[50], char prenom[50]) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
+    int i, j;
+    struct fichierimage *fichier3 = nouveau(fichier1->entetebmp.hauteur, fichier1->entetebmp.largeur);
+
+    // 
+    for (i = 0; i < fichier1->entetebmp.hauteur; i++) { // i = ligne
+        for (j = 0; j < fichier1->entetebmp.largeur; j++) { // j = colonne
+            fichier3->image[i][j].r = (fichier1->image[i][j].r + fichier2->image[i][j].r) / 2; // moyenne des niveaux de rouge
+            fichier3->image[i][j].g = (fichier1->image[i][j].g + fichier2->image[i][j].g) / 2; // moyenne des niveaux de vert
+            fichier3->image[i][j].b = (fichier1->image[i][j].b + fichier2->image[i][j].b) / 2; // moyenne des niveaux de bleu
+        }
+    }
+
+    sprintf(nomEnregistrement, "./res/%s_%s_supperposition%s", nom, prenom, extension);
+    enregistrer(nomEnregistrement, fichier3);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_supperposition%s", nom, prenom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_supperposition%s", nom, prenom, extension);
+    system(nomEnregistrement);
+} 
 
 // Supperposition d'une image sur une autre
 void superpositionImage(struct fichierimage *fichier, struct fichierimage *fichier2) {
@@ -702,6 +770,7 @@ void superpositionImage(struct fichierimage *fichier, struct fichierimage *fichi
     // On parcourt les pixels de l'image
     for (i = 0; i < fichier->entetebmp.hauteur; i++) {        // Parcours de l'image
         for (j = 0; j < fichier->entetebmp.largeur; j++) {    // Parcours de l'image
+            // On calcule la superposition des niveaux de l'image 
             fichier3->image[i][j].r = fichier->image[i][j].r; // On affecte les niveaux de l'image 1
             fichier3->image[i][j].g = fichier->image[i][j].g;
             fichier3->image[i][j].b = fichier->image[i][j].b;
@@ -709,13 +778,14 @@ void superpositionImage(struct fichierimage *fichier, struct fichierimage *fichi
     }
 
     // On parcourt les pixels de l'image2
-    for (i = 0; i < fichier2->entetebmp.hauteur; i++) {
-        for (j = 0; j < fichier2->entetebmp.largeur; j++) {
-            fichier3->image[i][j].r = fichier2->image[i][j].r;
-            fichier3->image[i][j].g = fichier2->image[i][j].g;
-            fichier3->image[i][j].b = fichier2->image[i][j].b;
-        }
-    }
+    for (i = 0; i < fichier2->entetebmp.hauteur; i++) { // Parcours de l'image
+        for (j = 0; j < fichier2->entetebmp.largeur; j++) { // Parcours de l'image
+            // On calcule la superposition des niveaux de l'image2
+            fichier3->image[i][j].r = fichier2->image[i][j].r; // On affecte les niveaux de l'image 2
+            fichier3->image[i][j].g = fichier2->image[i][j].g; 
+            fichier3->image[i][j].b = fichier2->image[i][j].b; 
+        } // Fin de la boucle de parcours de l'image
+    } // Fin de la boucle de parcours de l'image
 
     // On enregistre l'image
     enregistrer("./res/LAURETTA_PERONNE_supperposition.bmp", fichier3);
@@ -724,8 +794,10 @@ void superpositionImage(struct fichierimage *fichier, struct fichierimage *fichi
 }
 
 // Rotation d'une image d'un angle donné en degrés
-void rotationImage(struct fichierimage *fichier, int angle) {
+void rotationImage(struct fichierimage *fichier, char nom[50], char prenom[50], int angle) {
     char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
 
     struct fichierimage *fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
@@ -766,15 +838,19 @@ void rotationImage(struct fichierimage *fichier, int angle) {
         }
     }
 
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_rotation_%d°.bmp", angle);
+    sprintf(nomEnregistrement, "./res/%s_%s_rotation_%d°%s", nom, prenom, angle, extension);
     enregistrer(nomEnregistrement, fichier2);
-    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_rotation_%d°.bmp", angle);
-    system(nomEnregistrement);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_rotation_%d°%s", nom, prenom, angle, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_rotation_%d°%s", nom, prenom, angle, extension);
+    system(nomEnregistrement); 
     free(fichier2);
 }
 
 // réduire le bruit de l'image
-void reductionBruite(struct fichierimage *fichier) {
+void reductionBruite(struct fichierimage *fichier, char nom[50], char prenom[50]) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     int niveauR, niveauG, niveauB;
 
@@ -834,14 +910,19 @@ void reductionBruite(struct fichierimage *fichier) {
         }
     }
 
-    enregistrer("./res/LAURETTA_PERONNE_reduireBruit.bmp", fichier2);
-    system("open ./res/LAURETTA_PERONNE_reduireBruit.bmp");
+    sprintf(nomEnregistrement, "./res/%s_%s_reduction_bruite%s", nom, prenom, extension);
+    enregistrer(nomEnregistrement, fichier2);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_reduction_bruite%s", nom, prenom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_reduction_bruite%s", nom, prenom, extension);
+    system(nomEnregistrement);
     free(fichier2);
 }
 
 // modification de la luminance d'une image en couleur (0-100)
-void modifLuminanceImage(struct fichierimage *fichier, int luminance) {
+void modifLuminanceImage(struct fichierimage *fichier, char nom[50], int luminance) {
     char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     int niveauR, niveauG, niveauB;
 
@@ -858,16 +939,19 @@ void modifLuminanceImage(struct fichierimage *fichier, int luminance) {
             fichier2->image[i][j].b = niveauB;
         }
     }
+    
 
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_luminance%d_percent.bmp", luminance);
+    sprintf(nomEnregistrement, "./res/%s_luminance_%d_percent%s", nom,luminance, extension);
     enregistrer(nomEnregistrement, fichier2);
-    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_luminance%d_percent.bmp", luminance);
+    sprintf(nomEnregistrement, "open ./res/%s_luminance_%d_percent%s", nom,luminance, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_luminance_%d_percent%s", nom, prenom,luminance, extension);
     system(nomEnregistrement);
     free(fichier2);
 }
 
 // retourner les informations relative à l'image
 void informationSurImage(struct fichierimage *fichier) {
+
     int choix = 3;
 
     while (choix != 0) {
@@ -944,8 +1028,10 @@ void informationSurImage(struct fichierimage *fichier) {
 }
 
 // Sélectionner une portion de l'image avec les cordonnées entrées par l'utilisateur
-void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2) {
+void selectionnerZone(struct fichierimage *fichier, char nom[50], int x, int y, int x2, int y2) {
     char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     int x1, y1;
 
@@ -985,9 +1071,10 @@ void selectionnerZone(struct fichierimage *fichier, int x, int y, int x2, int y2
     fichier2->entetebmp.largeur = fichier->entetebmp.largeur - x1;
     fichier2->entetebmp.hauteur = fichier->entetebmp.hauteur - y1;
 
-    sprintf(nomEnregistrement, "./res/LAURETTA_PERONNE_selection_%d_%d_%d_%d.bmp", x, y, x2, y2);
+    sprintf(nomEnregistrement, "./res/%s_selection_%d_%d_%d_%d.bmp", nom, x, y, x2, y2);
     enregistrer(nomEnregistrement, fichier2);
-    sprintf(nomEnregistrement, "open ./res/LAURETTA_PERONNE_selection_%d_%d_%d_%d.bmp", x, y, x2, y2);
+    sprintf(nomEnregistrement, "open ./res/%s_selection_%d_%d_%d_%d.bmp",nom, x, y, x2, y2);
+    // sprintf(nomEnregistrement, "start ./res/%s_selection_%d_%d_%d_%d.bmp",nom, x, y, x2, y2);
     system(nomEnregistrement);
     free(fichier2);
 }
@@ -1113,7 +1200,10 @@ void calculHistogramme(struct fichierimage *fichier) {
 }
 
 // Filtre moyenneur sur une image.
-void filtreMoyenneur(struct fichierimage *fichier) {
+void filtreMoyenneur(struct fichierimage *fichier, char nom[50]) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     int r, g, b;
     int moyenneR = 0;
@@ -1161,9 +1251,12 @@ void filtreMoyenneur(struct fichierimage *fichier) {
                     fichier->image[i][j].r = moyenneR;
                 }
             }
-            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_R.bmp", fichier);
-            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_R.bmp");
-
+            sprintf(nomEnregistrement, "./res/%s_filtreMoyenneur_R%s", nom, extension);
+            enregistrer(nomEnregistrement, fichier);
+            sprintf(nomEnregistrement, "open ./res/%s_filtreMoyenneur_R%s", nom, extension);
+            // sprintf(nomEnregistrement, "start ./res/%s_filtreMoyenneur_R%s", nom, extension);
+            system(nomEnregistrement);
+            
             // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
             for (i = 0; i < taille; i++) {
                 for (j = 0; j < taille; j++) {
@@ -1180,8 +1273,11 @@ void filtreMoyenneur(struct fichierimage *fichier) {
                     fichier->image[i][j].g = moyenneG;
                 }
             }
-            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_G.bmp", fichier);
-            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_G.bmp");
+            sprintf(nomEnregistrement, "./res/%s_filtreMoyenneur_G%s", nom, extension);
+            enregistrer(nomEnregistrement, fichier);
+            sprintf(nomEnregistrement, "open ./res/%s_filtreMoyenneur_G%s", nom, extension);
+            // sprintf(nomEnregistrement, "start ./res/%s_filtreMoyenneur_G%s", nom, extension);
+            system(nomEnregistrement);
 
             // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
             for (i = 0; i < taille; i++) {
@@ -1199,8 +1295,11 @@ void filtreMoyenneur(struct fichierimage *fichier) {
                     fichier->image[i][j].b = moyenneB;
                 }
             }
-            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_B.bmp", fichier);
-            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_B.bmp");
+            sprintf(nomEnregistrement, "./res/%s_filtreMoyenneur_B%s", nom, extension);
+            enregistrer(nomEnregistrement, fichier);
+            sprintf(nomEnregistrement, "open ./res/%s_filtreMoyenneur_B%s", nom, extension);
+            // sprintf(nomEnregistrement, "start ./res/%s_filtreMoyenneur_B%s", nom, extension);
+            system(nomEnregistrement);
 
             // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
             for (i = 0; i < taille; i++) {
@@ -1223,8 +1322,11 @@ void filtreMoyenneur(struct fichierimage *fichier) {
                     fichier->image[i][j].b = moyenneB;
                 }
             }
-            enregistrer("./res/LAURETTA_PERONNE_filtreMoyenneur_R_G_B.bmp", fichier);
-            system("open ./res/LAURETTA_PERONNE_filtreMoyenneur_R_G_B.bmp");
+            sprintf(nomEnregistrement, "./res/%s_filtreMoyenneur_R_G_B%s", nom, extension);
+            enregistrer(nomEnregistrement, fichier);
+            sprintf(nomEnregistrement, "open ./res/%s_filtreMoyenneur_R_G_B%s", nom, extension);
+            // sprintf(nomEnregistrement, "start ./res/%s_filtreMoyenneur_R_G_B%s", nom, extension);
+            system(nomEnregistrement);
 
             // renitialisation après chaque filtre moyenneur pour éviter les erreurs de mélange
             for (i = 0; i < taille; i++) {
@@ -1245,7 +1347,10 @@ void filtreMoyenneur(struct fichierimage *fichier) {
 }
 
 // Histogramme de l'image et egalisation de l'image
-void histogrammeEgalisation(struct fichierimage *fichier) {
+void histogrammeEgalisation(struct fichierimage *fichier, char nom[50]) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     int r, g, b;
     int histoR[256];
@@ -1319,13 +1424,19 @@ void histogrammeEgalisation(struct fichierimage *fichier) {
     }
 
     // Enregistrement de l'image égalisée
-    enregistrer("./res/LAURETTA_PERONNE_histoEgalisation.bmp", fichier);
-    system("open ./res/LAURETTA_PERONNE_histoEgalisation.bmp");
+    sprintf(nomEnregistrement, "./res/%s_histo_egalisation%s", nom, extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_histo_egalisation%s", nom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_histo_egalisation%s", nom, extension);
+    system(nomEnregistrement);
     free(fichier);
 }
 
 // Passage d'une image RVB à TSL enregistement de l'image convertie
-void passageRVBTsl(struct fichierimage *fichier) {
+void passageRVBTsl(struct fichierimage *fichier, char nom[50], char prenom[50]) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
     int i, j;
     int r, g, b;
     int rTsl, gTsl, bTsl;
@@ -1350,9 +1461,10 @@ void passageRVBTsl(struct fichierimage *fichier) {
         }
     }
 
-    // Enregistrement de l'image convertie
-    enregistrer("./res/LAURETTA_PERONNE_passageRVBTsl.bmp", fichier);
-    system("open ./res/LAURETTA_PERONNE_passageRVBTsl.bmp");
+    sprintf(nomEnregistrement, "./res/%s_%s_RVBTsl%s", nom, prenom, extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_%s_RVBTsl%s", nom, prenom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_%s_RVBTsl%s", nom, prenom, extension);
+    system(nomEnregistrement);
     free(fichier);
 }
-

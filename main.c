@@ -46,6 +46,12 @@
 // parametre un pointeur de type : struct fichierimage *, une matrice de convolution
 // et un diviseur
 // la fonction ne retourne rien
+//
+// void imageVersNegatif(struct fichierimage *fichier)
+// permet de creer une image en mémoire de négatif, la fonction prend en
+// parametre un pointeur de type : struct fichierimage *
+// la fonction ne retourne rien
+//
 //------------------------------------------------------------------------------
 
 int main() {
