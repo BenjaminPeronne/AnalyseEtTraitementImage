@@ -1202,6 +1202,43 @@ void calculHistogramme(struct fichierimage *fichier) {
     free(fichier);
 }
 
+// fonction permettant de faire un filtre laplacien
+void filtreLaplacien (struct fichierimage *fichier, char nom[50]) {
+    char nomEnregistrement[100]; // nom de l'image enregistrer
+    char extension[5] = ".bmp";  // extension de l'image enregistrer
+    // --------------------------------------------------
+    int i, j, k, l;
+    int somme;
+
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
+        for (j = 0; j < fichier->entetebmp.largeur; j++) {
+            somme = 0;
+            for (k = -1; k < 2; k++) {
+                for (l = -1; l < 2; l++) {
+                    if (i + k >= 0 && i + k < fichier->entetebmp.hauteur && j + l >= 0 && j + l < fichier->entetebmp.largeur) {
+                        somme += fichier->image[i + k][j + l].r;
+                    }
+                }
+            }
+            somme -= fichier->image[i][j].r;
+            if (somme > 255) {
+                fichier->image[i][j].r = 255;
+            } else if (somme < 0) {
+                fichier->image[i][j].r = 0;
+            } else {
+                fichier->image[i][j].r = somme;
+            }
+        }
+    }
+    // Enregistrement de l'image et affichage de l'image
+    sprintf(nomEnregistrement, "./res/%s_filtre_laplacien%s", nom, extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_filtre_laplacien%s", nom, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_filtre_laplacien%s", nom, extension);
+    system(nomEnregistrement);
+    free(fichier);
+}
+
 // Filtre moyenneur sur une image.
 void filtreMoyenneur(struct fichierimage *fichier, char nom[50]) {
     char nomEnregistrement[100];
@@ -1505,6 +1542,53 @@ void contrasteImage(struct fichierimage *fichier, char nom[50], int contraste) {
     enregistrer(nomEnregistrement, fichier);
     sprintf(nomEnregistrement, "open ./res/%s_contraste%d%s", nom, contraste, extension);
     // sprintf(nomEnregistrement, "start ./res/%s_contraste%d%s", nom, contraste, extension);
+    system(nomEnregistrement);
+    free(fichier);
+}
+
+// Fonction permettant de faire un filtrage de sobel avec un masque de 3x3 en parametre (masque de convolution)
+void filtreSobel(struct fichierimage *fichier, char nom[50], int masque[3][3]) {
+    char nomEnregistrement[100]; // nom de l'image enregistrer
+    char extension[5] = ".bmp"; // extension de l'image enregistrer
+    // --------------------------------------------------
+    int i, j, k, l;
+    int somme_r, somme_g, somme_b;
+    int somme_r2, somme_g2, somme_b2;
+
+    for (i = 1; i < fichier->entetebmp.hauteur - 1; i++) {    // i = ligne
+        for (j = 1; j < fichier->entetebmp.largeur - 1; j++) { // j = colonne
+            somme_r = 0; 
+            somme_g = 0;
+            somme_b = 0;
+            for (k = -1; k <= 1; k++) { // k = ligne du masque
+                for (l = -1; l <= 1; l++) { // l = colonne du masque
+                    somme_r += fichier->image[i + k][j + l].r * masque[k + 1][l + 1]; // somme des valeurs de l'image multiplié par le masque
+                    somme_g += fichier->image[i + k][j + l].g * masque[k + 1][l + 1]; 
+                    somme_b += fichier->image[i + k][j + l].b * masque[k + 1][l + 1];
+                }
+            }
+            if (somme_r > 255) // si la somme est plus grande que 255
+                somme_r = 255; // on met la valeur a 255
+            else if (somme_r < 0) // si la somme est plus petite que 0
+                somme_r = 0; // on met la valeur a 0
+            if (somme_g > 255)
+                somme_g = 255;
+            else if (somme_g < 0)
+                somme_g = 0;
+            if (somme_b > 255)
+                somme_b = 255;
+            else if (somme_b < 0)
+                somme_b = 0;
+            fichier->image[i][j].r = somme_r; // copie de la nouvelle valeur dans l'image
+            fichier->image[i][j].g = somme_g;
+            fichier->image[i][j].b = somme_b;
+        }
+    }
+    // Enregistrement de l'image et affichage de l'image
+    sprintf(nomEnregistrement, "./res/%s_image_filtre_sobel_%d%s", nom, masque[1][1], extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_image_filtre_sobel_%d%s", nom, masque[1][1], extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_image_filtre_sobel_%d%s", nom, masque[1][1], extension);
     system(nomEnregistrement);
     free(fichier);
 }

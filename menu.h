@@ -36,7 +36,10 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         printf("\n  24. Filtre moyenneur");
         printf("\n  25. Egalisation de l'histogramme");
         printf("\n  26. Contraste"); 
-        printf("\n  27. Convolution de l'image");
+        printf("\n  27. Filtre Laplacien"); 
+        printf("\n  28. Convolution de l'image");
+        printf("\n  29. Filtre Sobel");
+
         printf("\n  0. Quitter");
 
         printf("\nVotre choix : ");
@@ -746,6 +749,28 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             contrasteImage(fichier, nom, contraste);      
         } else if (choix == 27) {
+            // Filtre Laplacien
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            filtreLaplacien(fichier, nom);
+        }
+        else if (choix == 28) {
             // convulation de l'image |last|
             char nomEnregistrement[100];
             char extension[5] = ".bmp";
@@ -793,6 +818,51 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%s", nom);
 
             convolution(fichier, nom, masque, diviseur);            
+        } else if (choix == 29) {
+            // Filtre Sobel
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+            int i, j;
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+
+            int masque[3][3];
+            // int masque[3][3] = {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+            // int masque[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+
+            printf("Entrer une matrice 3x3 séparer par des espaces\n");
+            printf("Par exemple : -1 0 1 -2 0 2 -1 0 1 \n");
+
+            // Masque de convulation
+            printf("Entrer le masque de convulation : \n");
+            for (i = 0; i < 3; i++) {
+                for (j = 0; j < 3; j++) {
+                    scanf("%d", &masque[i][j]);
+                }
+            }
+            printf("\n");
+            printf("voici le masque saisie");
+            printf("\n");
+            for (i = 0; i < 3; i++) {
+                for (j = 0; j < 3; j++) {
+                    printf("%4d ", masque[i][j]);
+                }
+                printf("\n");
+            }
+            
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            filtreSobel(fichier, nom, masque);
         } else if (choix == 0) {
             printf("Au revoir  \n");
         } else {
