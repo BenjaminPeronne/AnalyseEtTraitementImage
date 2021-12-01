@@ -1468,3 +1468,40 @@ void passageRVBTsl(struct fichierimage *fichier, char nom[50], char prenom[50]) 
     system(nomEnregistrement);
     free(fichier);
 }
+
+// fonction permettant le contraste de l'image en passant le de contraste en paramètre
+void contrasteImage(struct fichierimage *fichier, char nom[50], int contraste) {
+    char nomEnregistrement[100];
+    char extension[5] = ".bmp";
+    // --------------------------------------------------
+    int i, j;
+    int r, g, b;
+    int rContraste, gContraste, bContraste;
+
+    // Passage d'une image RVB à TSL
+    for (i = 0; i < fichier->entetebmp.hauteur; i++) {     // i = ligne
+        for (j = 0; j < fichier->entetebmp.largeur; j++) { // j = colonne
+            // copie de la couleur de l'image dans la nouvelle image
+            r = fichier->image[i][j].r;
+            g = fichier->image[i][j].g;
+            b = fichier->image[i][j].b;
+
+            // calcul de la nouvelle valeur de l'image
+            rContraste = (int)(r * (1 + (contraste / 100)));
+            gContraste = (int)(g * (1 + (contraste / 100)));
+            bContraste = (int)(b * (1 + (contraste / 100)));
+
+            // copie de la nouvelle couleur dans l'image
+            fichier->image[i][j].r = rContraste;
+            fichier->image[i][j].g = gContraste;
+            fichier->image[i][j].b = bContraste;
+        }
+    }
+
+    sprintf(nomEnregistrement, "./res/%s_contraste%d%s", nom, contraste, extension);
+    enregistrer(nomEnregistrement, fichier);
+    sprintf(nomEnregistrement, "open ./res/%s_contraste%d%s", nom, contraste, extension);
+    // sprintf(nomEnregistrement, "start ./res/%s_contraste%d%s", nom, contraste, extension);
+    system(nomEnregistrement);
+    free(fichier);
+}

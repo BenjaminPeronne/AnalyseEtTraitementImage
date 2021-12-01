@@ -34,7 +34,8 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         printf("\n  23. Calcul de l'histogramme d'une image");
         printf("\n  24. Filtre moyenneur");
         printf("\n  25. Egalisation de l'histogramme");
-        printf("\n  26. Convolution de l'image");
+        printf("\n  26. Contraste"); 
+        printf("\n  27. Convolution de l'image");
         printf("\n  0. Quitter");
 
         printf("\nVotre choix : ");
@@ -59,8 +60,10 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             // fichier = charger("LAURETTA_PERONNE_Lena.bmp"); // Charge mon Image .bmp télécharger depuis le web
             fichier = charger(nomEnregistrement); // Charge mon Image .bmp télécharger depuis le web
 
-            system("open LAURETTA_PERONNE_Lena.bmp");
-            system("start LAURETTA_PERONNE_Lena.bmp");
+            // Afficher l'image
+            sprintf(nomEnregistrement, "open %s%s", nomFichier, extension); // Concatène le nom du fichier avec l'extension .bmp
+            // sprintf(nomEnregistrement, "start %s%s", nomFichier, extension); // Concatène le nom du fichier avec l'extension .bmp
+            system(nomEnregistrement);
             free(fichier);
         } else if (choix == 2) {
             // -------------------------  Niveau de gris
@@ -714,9 +717,34 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-
             histogrammeEgalisation(fichier, nom);                
         } else if (choix == 26) {
+            // Contraste
+            char nomEnregistrement[100];
+            char extension[5] = ".bmp";
+
+            // Entrer le nom du fichier à charger
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
+            scanf("%s", nomFichier);
+
+            sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
+
+            fichier = charger(nomEnregistrement);
+
+            int contraste;
+            
+            printf("Entrer le niveau de contraste : "); 
+            scanf("%d", &contraste);
+
+            // Nom de l'utilisateur pour sauvegarder l'image
+            char nom[50];
+
+            printf("Entrer votre nom : ");
+            scanf("%s", nom);
+
+            contrasteImage(fichier, nom, contraste);      
+        } else if (choix == 27) {
             // convulation de l'image |last|
             char nomEnregistrement[100];
             char extension[5] = ".bmp";
