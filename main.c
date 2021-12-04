@@ -17,6 +17,7 @@
 // |!| Important |!|
 //
 // L'image de base est "Lena.bmp"
+// Une deuxième est utilisée qui est "Paysage.bmp"
 //
 // |!| Important |!|
 // L'image choisie par l'utilisateur doit être à la racine du dossier du programme.

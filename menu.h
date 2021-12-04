@@ -17,8 +17,8 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         printf("\n  5. Une image pivot gauche");
         printf("\n  6. Une image pivot droite");
         printf("\n  7. Passage d'une image RGB à TSL");
-        printf("\n  8. Passage d'une image TSL à RGB");
-        printf("\n  9. Calcul du pourcentage de couleur");
+        // printf("\n  8. Passage d'une image TSL à RGB");
+        // printf("\n  9. Calcul du pourcentage de couleur");
         printf("\n  10. Création d'une image négative");
         printf("\n  11. Seuillage d'une image"); // Seuillage d'une image
         printf("\n  12. Inversion des couleurs d'une image");
@@ -35,8 +35,8 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         printf("\n  23. Calcul de l'histogramme d'une image");
         printf("\n  24. Filtre moyenneur");
         printf("\n  25. Egalisation de l'histogramme");
-        printf("\n  26. Contraste"); 
-        printf("\n  27. Filtre Laplacien"); 
+        printf("\n  26. Contraste");
+        printf("\n  27. Filtre Laplacien");
         printf("\n  28. Convolution de l'image");
         printf("\n  29. Filtre Sobel");
 
@@ -54,9 +54,9 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             char extension[5] = ".bmp";
 
             // Entrer le nom du fichier à charger
-            char nomFichier[100];                                   // nom du fichier
+            char nomFichier[100];                            // nom du fichier
             printf("Entrer le nom du fichier à charger : "); // Demande le nom du fichier à charger
-            scanf("%s", nomFichier);                                // Récupère le nom du fichier à charger
+            scanf("%s", nomFichier);                         // Récupère le nom du fichier à charger
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension); // Concatène le nom du fichier avec l'extension .bmp
 
@@ -75,9 +75,9 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             char extension[5] = ".bmp";
 
             // Entrer le nom du fichier à charger
-            char nomFichier[100];                                   // nom du fichier
+            char nomFichier[100];                            // nom du fichier
             printf("Entrer le nom du fichier à charger : "); // Demande le nom du fichier à charger
-            scanf("%s", nomFichier);                                // Récupère le nom du fichier à charger
+            scanf("%s", nomFichier);                         // Récupère le nom du fichier à charger
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension); // Concatène le nom du fichier avec l'extension .bmp
 
@@ -87,24 +87,19 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            imageVersNiveauDeGris(fichier, nom, prenom);                    
-        } 
-        else if (choix == 3) {
+            imageVersNiveauDeGris(fichier, nom);
+        } else if (choix == 3) {
             // ------------------------- Image Miroir
             char nomEnregistrement[100];
             char extension[5] = ".bmp";
 
             // Entrer le nom du fichier à charger
-            char nomFichier[100];                            
-            printf("Entrer le nom du fichier à charger : "); 
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
             scanf("%s", nomFichier);
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
@@ -114,23 +109,19 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            imageVersMirroir(fichier, nom, prenom);
+            imageVersMirroir(fichier, nom);
         } else if (choix == 4) {
             // ------------------------- Image symétrie
             char nomEnregistrement[100];
             char extension[5] = ".bmp";
 
             // Entrer le nom du fichier à charger
-            char nomFichier[100];                            
-            printf("Entrer le nom du fichier à charger : "); 
+            char nomFichier[100];
+            printf("Entrer le nom du fichier à charger : ");
             scanf("%s", nomFichier);
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
@@ -140,15 +131,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            imageVersSymetrie(fichier, nom, prenom);
+            imageVersSymetrie(fichier, nom);
         } else if (choix == 5) {
             // ------------------------- Image Pivot Gauche
             char nomEnregistrement[100];
@@ -166,15 +153,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            pivoterImageDroit(fichier, nom, prenom);
+            pivoterImageGauche(fichier, nom);
         } else if (choix == 6) {
             // ------------------------- Image Pivot Droite
             char nomEnregistrement[100];
@@ -192,16 +175,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            
-            pivoterImageGauche(fichier, nom, prenom);
+            pivoterImageDroite(fichier, nom);
         } else if (choix == 7) {
             // Image RGB vers TSL
             char nomEnregistrement[100];
@@ -219,15 +197,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            passageRVBTsl(fichier, nom, prenom);
+            passageRVBTsl(fichier, nom);
         } else if (choix == 8) {
             // Image TSL vers RGB
 
@@ -267,18 +241,14 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
             fichier = charger(nomEnregistrement);
             // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
-            imageNegative(fichier, nom, prenom);        
+            imageNegative(fichier, nom);
         } else if (choix == 11) {
             // Seuillage de l'image
             int seuil = 0;
@@ -297,13 +267,9 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
-
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
 
             fichier = charger(nomEnregistrement);
             // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
@@ -311,7 +277,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             printf("Entrer le seuil : ");
             scanf("%d", &seuil);
 
-            seuillage(fichier, nom, prenom, seuil);
+            seuillage(fichier, nom, seuil);
         } else if (choix == 12) {
             // Inversion des couleurs d'une image
             char nomEnregistrement[100];
@@ -329,17 +295,13 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
             fichier = charger(nomEnregistrement);
 
-            inversionCouleur(fichier, nom, prenom);        
+            inversionCouleur(fichier, nom);
         } else if (choix == 13) {
             // Réduction de l'image
             char nomEnregistrement[100];
@@ -361,18 +323,13 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-                    
             fichier = charger(nomEnregistrement);
 
-            reductionImage(fichier, nom, prenom, echelle);
+            reductionImage(fichier, nom, echelle);
             // free(fichier);
         } else if (choix == 14) {
             // Agrandissement de l'image
@@ -385,7 +342,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%s", nomFichier);
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
-            
+
             int echelle = 0;
 
             printf("Entrer l'échelle : ");
@@ -396,15 +353,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-        
-            agrandissementImage(fichier, nom, prenom, echelle);
+            agrandissementImage(fichier, nom, echelle);
         } else if (choix == 15) {
             // monochrome d'une image en paramètre un canal
             char nomEnregistrement[100];
@@ -416,11 +369,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%s", nomFichier);
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
-        
+
             // Entrer une couleur  soit R ou G ou B
             char couleur;
 
-            printf("Entrer la couleur : \n");
+            printf("Entrer une couleur soit R ou G ou B : ");
             scanf(" %c", &couleur);
 
             fichier = charger(nomEnregistrement);
@@ -428,15 +381,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            monochromeImage(fichier, nom, prenom, couleur);
+            monochromeImage(fichier, nom, couleur);
         } else if (choix == 16) {
             // Supperposition d'une image sur une autre
             char nomEnregistrement1[100];
@@ -456,7 +405,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%s", nomFichier2);
 
             sprintf(nomEnregistrement2, "%s%s", nomFichier2, extension);
-            
+
             fichier = charger(nomEnregistrement1);
             fichier2 = charger(nomEnregistrement2);
             // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
@@ -464,15 +413,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            supperposition(fichier, fichier2, nom, prenom);
+            supperposition(fichier, fichier2, nom);
 
             // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Superposition.bmp", fichier);
             // system("./res/LAURETTA_PERONNE_resultat_Lena_Superposition.bmp");
@@ -489,7 +434,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%s", nomFichier);
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
-            
+
             int angle = 0;
             printf("Entrer l'angle : ");
             scanf("%d", &angle);
@@ -499,15 +444,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            rotationImage(fichier, nom, prenom, angle);
+            rotationImage(fichier, nom, angle);
         } else if (choix == 18) {
             // Réduction de bruite d'une image
             char nomEnregistrement[100];
@@ -525,17 +466,13 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            reductionBruite(fichier, nom, prenom);
+            reductionBruite(fichier, nom);
         } else if (choix == 19) {
-            // Filtre                             
+            // Filtre
             char nomEnregistrement[100];
             char extension[5] = ".bmp";
 
@@ -550,7 +487,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             int matrice[3][3];
             int i, j;
-            
+
             printf("\n");
             printf("Entrer une matrice 3x3 séparer par des espaces\n");
             printf("Par exemple : 1 2 1 2 4 2 1 2 1 \n");
@@ -573,15 +510,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
-            char prenom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            printf("Entrer votre prenom : ");
-            scanf("%s", prenom);
-
-            filtreImage(fichier, nom, prenom, matrice);            
+            filtreImage(fichier, nom, matrice);
         } else if (choix == 20) {
             // luminosite d'une image
             char nomEnregistrement[100];
@@ -601,13 +534,13 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%d", &luminosite);
 
             // Nom de l'utilisateur pour sauvegarder l'image
-            char nom[50];            
+            char nom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            modifLuminanceImage(fichier, nom, luminosite);            
-            // modifLuminanceImage(fichier, luminosite);                        
+            modifLuminanceImage(fichier, nom, luminosite);
+            // modifLuminanceImage(fichier, luminosite);
         } else if (choix == 21) {
             //  Récupérations d'informations d'une images.
             char nomEnregistrement[100];
@@ -621,7 +554,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
 
             fichier = charger(nomEnregistrement);
-        
+
             informationSurImage(fichier);
             free(fichier);
         } else if (choix == 22) {
@@ -650,12 +583,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%d", &y2);
 
             // Nom de l'utilisateur pour sauvegarder l'image
-            char nom[50];            
+            char nom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            
             selectionnerZone(fichier, nom, x, y, x2, y2);
 
             // enregistrer("./res/LAURETTA_PERONNE_resultat_Lena_Selection.bmp", fichier);
@@ -690,11 +622,11 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
 
             sprintf(nomEnregistrement, "%s%s", nomFichier, extension);
 
-            fichier = charger(nomEnregistrement);            
+            fichier = charger(nomEnregistrement);
             // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
             // Nom de l'utilisateur pour sauvegarder l'image
-            char nom[50];            
+            char nom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
@@ -716,12 +648,12 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
             // Nom de l'utilisateur pour sauvegarder l'image
-            char nom[50];            
+            char nom[50];
 
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            histogrammeEgalisation(fichier, nom);                
+            histogrammeEgalisation(fichier, nom);
         } else if (choix == 26) {
             // Contraste
             char nomEnregistrement[100];
@@ -737,8 +669,8 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             fichier = charger(nomEnregistrement);
 
             int contraste;
-            
-            printf("Entrer le niveau de contraste : "); 
+
+            printf("Entrer le niveau de contraste : ");
             scanf("%d", &contraste);
 
             // Nom de l'utilisateur pour sauvegarder l'image
@@ -747,7 +679,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            contrasteImage(fichier, nom, contraste);      
+            contrasteImage(fichier, nom, contraste);
         } else if (choix == 27) {
             // Filtre Laplacien
             char nomEnregistrement[100];
@@ -769,8 +701,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%s", nom);
 
             filtreLaplacien(fichier, nom);
-        }
-        else if (choix == 28) {
+        } else if (choix == 28) {
             // convulation de l'image |last|
             char nomEnregistrement[100];
             char extension[5] = ".bmp";
@@ -785,7 +716,6 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             fichier = charger(nomEnregistrement);
             // fichier = charger("LAURETTA_PERONNE_Lena.bmp");
 
-
             int i, j, diviseur;
             int masque[3][3];
             // int masque[3][3] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
@@ -796,6 +726,9 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             scanf("%d", &diviseur);
 
             // Masque de convulation
+            printf("\n");
+            printf("Entrer une matrice 3x3 séparer par des espaces\n");
+            printf("Par exemple : 1 2 1 2 4 2 1 2 1 \n");
             printf("Entrer le masque de convulation : \n");
             for (i = 0; i < 3; i++) {
                 for (j = 0; j < 3; j++) {
@@ -817,7 +750,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
             printf("Entrer votre nom : ");
             scanf("%s", nom);
 
-            convolution(fichier, nom, masque, diviseur);            
+            convolution(fichier, nom, masque, diviseur);
         } else if (choix == 29) {
             // Filtre Sobel
             char nomEnregistrement[100];
@@ -856,7 +789,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
                 }
                 printf("\n");
             }
-            
+
             // Nom de l'utilisateur pour sauvegarder l'image
             char nom[50];
             printf("Entrer votre nom : ");
