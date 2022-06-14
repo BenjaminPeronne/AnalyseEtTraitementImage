@@ -46,7 +46,7 @@ void menu_principal(struct fichierimage *fichier, struct fichierimage *fichier2,
         scanf("%d", &choix);
 
         system("clear");
-        system("cls");
+        // system("cls");
 
         if (choix == 1) {
             // Entrer le nom du fichier à charger

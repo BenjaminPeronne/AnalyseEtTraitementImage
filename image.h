@@ -368,36 +368,20 @@ void imageVersSymetrie(struct fichierimage *fichier, char nom[50]) {
     // --------------------------------------------------
     int i, j; // compteur
 
-    struct fichierimage *fichier2 = nouveau(fichier->entetebmp.largeur, fichier->entetebmp.hauteur); // création d'une image de même taille que l'image à symétriser
-
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) {          // parcours de l'image
-        for (j = fichier->entetebmp.largeur / 2; j >= 0; j--) { // parcours de l'image
-            fichier2->image[i][j].r = fichier->image[i][j].r;   // on recopie les couleurs de l'image dans l'image symétrique
-            fichier2->image[i][j].g = fichier->image[i][j].g;
-            fichier2->image[i][j].b = fichier->image[i][j].b;
-
-            // on inverse les couleurs
-            fichier2->image[i][fichier->entetebmp.hauteur - j - 1].r = fichier->image[i][j].r;
-            fichier2->image[i][fichier->entetebmp.hauteur - j - 1].g = fichier->image[i][j].g;
-            fichier2->image[i][fichier->entetebmp.hauteur - j - 1].b = fichier->image[i][j].b;
+    for (int i = 0; i < fichier->entetebmp.largeur; i++) {
+        for (int j = 0; j < fichier->entetebmp.hauteur; j++) {
+            fichier->image[i][j].r = fichier->image[i][fichier->entetebmp.hauteur - j].r;
+            fichier->image[i][j].g = fichier->image[i][fichier->entetebmp.hauteur - j].g;
+            fichier->image[i][j].b = fichier->image[i][fichier->entetebmp.hauteur - j].b;
         }
     }
-
-    // for (i = 0; i < fichier->entetebmp.hauteur; i++) {
-    //     for (j = 0; j < fichier->entetebmp.largeur; j++) {
-    //         fichier->image[i][j].r = fichier2->image[i][j].r;
-    //         fichier->image[i][j].g = fichier2->image[i][j].g;
-    //         fichier->image[i][j].b = fichier2->image[i][j].b;
-    //     }
-    // }
-
     // Enregistrement de l'image et affichage de l'image
     sprintf(nomEnregistrement, "./res/%s_image_symetrie%s", nom, extension);
-    enregistrer(nomEnregistrement, fichier2);
+    enregistrer(nomEnregistrement, fichier);
     // sprintf(nomEnregistrement, "open ./res/%s_image_symetrie%s", nom, extension);
     sprintf(nomEnregistrement, "start ./res/%s_image_symetrie%s", nom, extension);
     system(nomEnregistrement);
-    free(fichier2);
+    free(fichier);
 }
 
 // fonction permetant de pivoter une image de 90° à gauche
@@ -406,23 +390,15 @@ void pivoterImageGauche(struct fichierimage *fichier, char nom[50]) {
     char extension[5] = ".bmp";
     // --------------------------------------------------
     int i, j;
-    struct fichierimage *fichier2;
+    struct pixels pixel;
 
-    fichier2 = nouveau(fichier->entetebmp.hauteur, fichier->entetebmp.largeur);
-
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
-        for (j = 0; j < fichier->entetebmp.largeur; j++) {
-            fichier2->image[i][j].r = fichier->image[j][i].r;
-            fichier2->image[i][j].g = fichier->image[j][i].g;
-            fichier2->image[i][j].b = fichier->image[j][i].b;
-        }
-    }
-
-    for (i = 0; i < fichier->entetebmp.hauteur; i++) {
-        for (j = 0; j < fichier->entetebmp.largeur; j++) {
-            fichier->image[i][j].r = fichier2->image[i][j].r;
-            fichier->image[i][j].g = fichier2->image[i][j].g;
-            fichier->image[i][j].b = fichier2->image[i][j].b;
+    for (i = 0; i < fichier->entetebmp.largeur / 2; i++) {
+        for (j = 0; j < fichier->entetebmp.hauteur / 2; j++) {
+            pixel = fichier->image[i][j];
+            fichier->image[i][j] = fichier->image[j][fichier->entetebmp.largeur - i];
+            fichier->image[j][fichier->entetebmp.largeur - i] = fichier->image[fichier->entetebmp.largeur - i][fichier->entetebmp.hauteur - j];
+            fichier->image[fichier->entetebmp.largeur - i][fichier->entetebmp.hauteur - j] = fichier->image[fichier->entetebmp.largeur - j][i];
+            fichier->image[fichier->entetebmp.largeur - j][i] = pixel;
         }
     }
 
@@ -431,7 +407,7 @@ void pivoterImageGauche(struct fichierimage *fichier, char nom[50]) {
     // sprintf(nomEnregistrement, "open ./res/%s_image_pivoter_gauche%s", nom, extension);
     sprintf(nomEnregistrement, "start ./res/%s_image_pivoter_gauche%s", nom, extension);
     system(nomEnregistrement);
-    free(fichier2);
+    free(fichier);
 }
 
 // fonction permetant de pivoter une image de 90° à droite
@@ -442,13 +418,13 @@ void pivoterImageDroite(struct fichierimage *fichier, char nom[50]) {
     int i, j;
     struct pixels pixel;
 
-    for (i = 0; i < fichier->entetebmp.hauteur / 2; i++) {
-        for (j = 0; j < fichier->entetebmp.largeur / 2; j++) {
-            pixel = fichier->image[i][j];
-            fichier->image[i][j] = fichier->image[fichier->entetebmp.hauteur - 1 - j][i];
-            fichier->image[fichier->entetebmp.hauteur - 1 - j][i] = fichier->image[fichier->entetebmp.hauteur - 1 - i][fichier->entetebmp.largeur - 1 - j];
-            fichier->image[fichier->entetebmp.hauteur - 1 - i][fichier->entetebmp.largeur - 1 - j] = fichier->image[j][fichier->entetebmp.hauteur - 1 - i];
-            fichier->image[j][fichier->entetebmp.hauteur - 1 - i] = pixel;
+    for (i = 0; i < fichier->entetebmp.largeur / 2; i++) {
+        for (j = 0; j < fichier->entetebmp.hauteur / 2; j++) {
+            pixel = fichier->image[i][j]; //
+            fichier->image[i][j] = fichier->image[fichier->entetebmp.largeur - j][i];
+            fichier->image[fichier->entetebmp.largeur - j][i] = fichier->image[fichier->entetebmp.largeur - i][fichier->entetebmp.hauteur - j];
+            fichier->image[fichier->entetebmp.largeur - i][fichier->entetebmp.hauteur - j] = fichier->image[j][fichier->entetebmp.largeur - i];
+            fichier->image[j][fichier->entetebmp.largeur - i] = pixel;
         }
     }
 
@@ -794,7 +770,7 @@ void superpositionImage(struct fichierimage *fichier, struct fichierimage *fichi
     }     // Fin de la boucle de parcours de l'image
 
     // On enregistre l'image
-    sprintf(nomEnregistrement, "./res/%s_superpositionImage%s", nom, extension);
+    sprintf(nomEnregistrement, "./res/%s_sup                    erpositionImage%s", nom, extension);
     enregistrer(nomEnregistrement, fichier3);
     // sprintf(nomEnregistrement, "open ./res/%s_superpositionImage%s", nom, extension);
     sprintf(nomEnregistrement, "start ./res/%s_superpositionImage%s", nom, extension);
